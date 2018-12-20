@@ -15,19 +15,19 @@ yarn-error.log*
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-fe/node_modules
-fe/.pnp
-fe/.pnp.js
+/fe/node_modules
+/fe/.pnp
+/fe/.pnp.js
 
 # testing
-fe/coverage
+/fe/coverage
 
 # production
-fe/build
+/fe/build
 
 # misc
-fe/.DS_Store
-fe/.env.local
-fe/.env.development.local
-fe/.env.test.local
-fe/.env.production.local
+/fe/.DS_Store
+/fe/.env.local
+/fe/.env.development.local
+/fe/.env.test.local
+/fe/.env.production.local
