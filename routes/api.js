@@ -16,8 +16,7 @@ router.post('/login', function(req, res) {
   const username = req.body.username;
   const password = crypto.createHash('md5').update('' + req.body.password).digest('hex');  // 先加密后验证
   const responseFormat = new ResponseFormat(res);
-  loginModel.verifyLogin2(username, password).then(rows => {
-    console.log(rows);
+  loginModel.verifyLogin(username, password).then(rows => {
     if (rows.length > 0) {
       const user = rows[0];
       const token = crypto.createHash('md5').update('' + user.id).digest('hex');
