@@ -1,0 +1,27 @@
+{
+  "wwwBaseUrl": "http://localhost:3000",
+  "db": {
+    "connectionLimit" : 10,
+    "host"            : "localhost",
+    "user"            : "root",
+    "database"        : "fastmock"
+  },
+  "sequeliszeOptions": {
+    "dialect": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "operatorsAliases": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    },
+    "logging": true,
+    "dialectOptions": {
+      "supportBigNumbers": true,
+      "bigNumberStrings": true
+    }
+  },
+  "radis": null
+}

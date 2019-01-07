@@ -9,6 +9,10 @@ class ApiModel {
     const querySql = `select * from api where project='${projectId}' limit ${from},${pageSize}`;
     return db.query(querySql);
   }
+  /**
+   * 保存api， 如果有id则执行update否则执行insert
+   * @param {number} api 
+   */
   save(api) {
     let sql = '';
     if (!api.id) {
@@ -20,8 +24,19 @@ class ApiModel {
       return db.save(sql, [api.name, api.method, api.url, api.description, api.on, api.mockRule, api.updateTime]);
     }
   }
+  /**
+   * 根聚api id删除api
+   * @param {number} id 
+   */
   deleteApi(id) {
     return db.query('delete from api where id=' + id);
+  }
+  /**
+   * 根聚项目id删除项目下面所有api
+   * @param {number} projectId
+   */
+  deleteByProjectId(projectId) {
+    return db.query('delete from api where project=' + projectId);
   }
   findApi(id) {
     const querySql = 'select * from api where '
@@ -31,6 +46,14 @@ class ApiModel {
   findApiMock(projectid, apiUrl) {
     const querySql = 'select mock_rule from api where api.project=' + projectid
       + ' and api.url="' + apiUrl + '"'; 
+    return db.query(querySql);
+  }
+  /**
+   * 获取项目的所有api
+   * @param {number} projectid 
+   */
+  findApiByProjectId(projectid) {
+    const querySql = 'select * from api where api.project=' + projectid; 
     return db.query(querySql);
   }
 }

@@ -5,13 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/test');
 var mock = require('./routes/mock');
 var api = require('./routes/api');
 var cors = require('cors');
-var config = require('./config');
+var config = require('config');
+// import restc https://elemefe.github.io/restc/
+const restc = require('restc');
 var app = express();
+
 var loginMiddleware = require('./middlewares/login');
 
 // 跨域允许
@@ -42,24 +46,32 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/', express.static(path.join(__dirname, 'views/index')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/static', express.static(path.join(__dirname, 'views/index/static')));
 // 使用 session 中间件
-app.use(session({
-  secret :  'secret', // 对session id 相关的cookie 进行签名
+var radisOptions = config.get('radis');
+var sessionOptions = {
+  secret : 'secret', // 对session id 相关的cookie 进行签名
   resave : true,
   rolling: true,
   saveUninitialized: true, // 是否保存未初始化的会话
   cookie : {
       maxAge : 1000 * 60 * 60 * 2, // 设置 session 的有效时间，单位毫秒
   },
-}));
+};
+if (config.get('enviroment') === 'prod') {
+  sessionOptions.store = new RedisStore(radisOptions)
+}
+app.use(session(sessionOptions));
+// 对mock类型的接口（即录入的接口的访问）挂载restc中间件，
+// 实现通过浏览器地址栏请求地址时可以像类似于postman一样调试接口
+app.use('/mock/*', restc.express());
 // 登录拦截
 
 app.use('/', index);
 app.use(loginMiddleware);
 app.use('/api', api);
-app.use('/users', users);
+app.use('/test', users);
 app.use('/mock', mock);
 
 // catch 404 and forward to error handler

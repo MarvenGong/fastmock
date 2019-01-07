@@ -1,0 +1,86 @@
+
+@import '~antd/dist/antd.css'; // 引入官方提供的 less 样式入口文件
+@import './styles/custom-animate.scss';
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.my-container{
+  width: 1200px;
+  margin: 0 auto;
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.empty-info{
+  text-align: center;
+  font-size: 20px;
+  color: #999;
+  padding: 100px 0;
+  p.content{
+    .anticon{
+      font-size: 48px;
+      position: relative;
+      top: 8px;
+      margin-right: 10px;
+    }
+  }
+}
+.modal-form{
+  .ant-form-item{
+    margin-bottom: 0px;
+  }
+}
+.ant-card-actions{
+  & > li > span {
+    display: block;
+  }
+  .card-action-item{
+    display: block;
+  }
+}
+.ant-table{
+  .ant-btn{
+    margin: 0 4px;
+  }
+}
+.ant-table-small > .ant-table-content > .ant-table-body{
+  margin: 0 !important;
+}
+@mixin single-ellipsis{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+@mixin multi-ellipsis($rows){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $rows;
+  overflow: hidden;
+}
+.fs16{
+  font-size: 16px;
+}
+.text-333{
+  color: #666;
+}

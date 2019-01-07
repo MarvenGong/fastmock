@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const pathToRegexp = require('path-to-regexp');
+const pathToRegexp = require('path-to-regexp'); // https://www.npmjs.com/package/path-to-regexp
 import { ApiModel, ProjectModel } from '../models';
 import Mock from 'mockjs';
 import { VM } from 'vm2';
@@ -10,9 +10,14 @@ const projectModel = new ProjectModel();
 // const stringUtils = new StringUtils();
 router.all('*', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
+  res.header('Access-Control-Allow-Origin', '*');
+  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
-  console.log(pathNode);
+  // console.log(pathNode);
   if (!pathNode) {
     res.json({ code: '0002', desc: '该接口地址不存在' });
   } else {
@@ -27,11 +32,21 @@ router.all('*', async function(req, res) {
       }
     });
     try {
-      const p = await projectModel.findProjectBySign(pSign);
+      const p = await projectModel.findProjectBySign(pSign); // 根据项目的秘钥ID找到项目信息以获取项目的唯一ID
       if (p && p.length > 0) {
-        const rows = await apiModel.findApiMock(p[0].id, mockUrl);
+        const rows = await apiModel.findApiByProjectId(p[0].id); // 先根据项目id获取所有的接口
         if (rows) {
-          let mockRule = rows[0].mock_rule;
+          // 筛选出符合条件的接口
+          const rightRows = rows.filter(api => {
+            return pathToRegexp(api.url).exec(mockUrl); // pathToRegexp 匹配url表达式
+          });
+          if (!rightRows) {
+            responseFormat.jsonError('没有匹配到接口');
+            return false;
+          }
+          // console.log('匹配到的api');
+          // console.log(rightRows);
+          let mockRule = rightRows[0].mock_rule;
           mockRule = mockRule.replace(/[\r\n]/g, '');
           // let valueJson = JSON.parse(new Function(`return ${stringUtils.trim(value)}`));
           const vm = new VM({

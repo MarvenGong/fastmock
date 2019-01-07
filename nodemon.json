@@ -2,7 +2,7 @@
   "restartable": "rs",
   "ignore": [
     ".git",
-    "fe",
+    "f2e",
     "node_modules/**/node_modules"
   ],
   "verbose": true,
@@ -12,12 +12,8 @@
   "events": {
     "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
   },
-  "watch": [
-    "test/fixtures/",
-    "test/samples/"
-  ],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "develop"
   },
   "ext": "js,json"
 }

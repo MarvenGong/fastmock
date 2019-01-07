@@ -1,0 +1,10 @@
+{
+  "wwwBaseUrl": "http://localhost:3000",
+  "enviroment": "dev",
+  "db": {
+    "password"        : ""
+  },
+  "sequeliszeOptions": {
+    "logging": true
+  }
+}

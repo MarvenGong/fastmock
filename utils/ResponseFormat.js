@@ -19,7 +19,7 @@ class ResponseFormat {
   jsonError(error) {
     this.res.json({
       code: '0002',
-      desc: error,
+      desc: typeof error === 'object' ? error.name + ':' + error.message : error,
       data: null
     })
   }

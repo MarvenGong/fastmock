@@ -1,0 +1,39 @@
+.pm-list{
+  .pm-info{
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+  }
+}
+.add-member{
+  width: 500px;
+  margin: 10px auto
+}
+.pm{
+  .global-search-wrapper {
+    padding-right: 50px;
+  }
+  .global-search {
+    width: 100%;
+    .ant-select-selection__clear{
+      right: 100px;
+    }
+  }
+  .global-search.ant-select-auto-complete .ant-select-selection--single {
+    margin-right: -46px;
+  }
+  .global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input:not(:last-child) {
+    padding-right: 62px;
+  }
+  .global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input-suffix {
+    right: 0;
+  }
+  .global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input-suffix button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .global-search-item-count {
+    position: absolute;
+    right: 16px;
+  }
+}

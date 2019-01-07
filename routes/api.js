@@ -3,6 +3,7 @@ var router = express.Router();
 const crypto = require('crypto');
 const ETools = require('etools');
 import apiInterface from './api-interface';
+import apiProject from './api-project';
 import LoginModel from '../models/LoginModel';
 import ProjectModel from '../models/ProjectModel';
 import ApiModel from '../models/ApiModel';
@@ -13,9 +14,10 @@ const projectModel = new ProjectModel();
 const apiModel = new ApiModel();
 router.post('/login', function(req, res) {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = crypto.createHash('md5').update('' + req.body.password).digest('hex');  // 先加密后验证
   const responseFormat = new ResponseFormat(res);
-  loginModel.verifyLogin(username, password).then(rows => {
+  loginModel.verifyLogin2(username, password).then(rows => {
+    console.log(rows);
     if (rows.length > 0) {
       const user = rows[0];
       const token = crypto.createHash('md5').update('' + user.id).digest('hex');
@@ -23,17 +25,46 @@ router.post('/login', function(req, res) {
       req.session.userId = user.id;
       responseFormat.jsonSuccess({
         loginSuccess: true,
-        userInfo: {
-          username,
-          token
-        }
+        userInfo: { ...{
+          username: user.username,
+          userId: user.id
+        }, token}
       });
     } else {
-      responseFormat.jsonError('用户名或密码错误');
+      responseFormat.jsonError('用户名或密码错误' + password);
     }
   }).catch(err => {
     responseFormat.jsonError(err);
   });
+});
+router.post('/register', async function(req, res) {
+  const responseFormat = new ResponseFormat(res);
+  let requestData = {...req.body};
+  // console.log(requestData);
+  try {
+    const resp = await loginModel.findUserByUsername(requestData.username);
+    if (resp && resp.length > 0) {
+      responseFormat.jsonError('该用户名已经被注册');
+      return false;
+    }
+    const resp2 = await loginModel.findUserByEmail(requestData.email);
+    if (resp2 && resp2.length > 0) {
+      responseFormat.jsonError('该邮箱已经被注册');
+      return false;
+    }
+    const pwd = crypto.createHash('md5').update('' + requestData.password).digest('hex'); // 密码加密
+    requestData.password = pwd;
+    const resp3 = await loginModel.register2(requestData);
+    if (resp3.id) {
+      responseFormat.jsonSuccess({
+        regSuccess: true,
+      });
+    } else {
+      responseFormat.jsonError('注册失败');
+    }
+  } catch (error) {
+    responseFormat.jsonError(error);
+  }
 });
 router.get('/logout', function(req, res) {
   const responseFormat = new ResponseFormat(res);
@@ -43,62 +74,20 @@ router.get('/logout', function(req, res) {
     success: true
   });
 });
-router.get('/project/list', async function(req, res) {
+// 根据用户名，邮箱搜索用户
+router.get('/searchUser', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
-  let userId = req.session.userId;
-  let source = req.query.source;
   try {
-    const rows = await projectModel.getProjectList(userId, source);
-    if (rows) {
-      responseFormat.jsonSuccess({ projectList: rows });
+    const resp = await loginModel.searchUser(req.query.key);
+    if (resp) {
+      responseFormat.jsonSuccess(resp);
     } else {
-      responseFormat.jsonError('查询失败');
+      responseFormat.jsonError('搜索失败');
     }
   } catch (error) {
     responseFormat.jsonError(error);
   }
 });
-router.post('/project/add', function(req, res) {
-  const responseFormat = new ResponseFormat(res);
-  let userId = req.session.userId;
-  const now = new Date();
-  const nowStr = ETools.datetime.format(now, 'yyyy-MM-dd hh:mm:ss');
-  const sign = ETools.string.generateUUID();
-  const signMD5 = crypto.createHash('md5').update('' + sign).digest('hex');
-  const project = {
-    create_user: userId,
-    name: req.body.name,
-    description: req.body.description,
-    baseurl: req.body.baseurl,
-    create_time: nowStr,
-    update_time: nowStr,
-    sign: signMD5
-  }
-  projectModel.addProject(project).then(rows => {
-    if (rows) {
-      responseFormat.jsonSuccess({ projectList: rows });
-    } else {
-      responseFormat.jsonError('添加失败');
-    }
-  }).catch(error => {
-    responseFormat.jsonError(error);
-  });
-});
-router.get('/project/:id', async function(req, res) {
-  const responseFormat = new ResponseFormat(res);
-  const id = req.params.id;
-  try {
-    const resp = await projectModel.find(id);
-    if (resp) {
-      let p = resp[0];
-      p.mockBasePath = config.WWW_BASE_URL + '/mock/' + p.sign + p.baseurl;
-      responseFormat.jsonSuccess({ project: p });
-    }else {
-      responseFormat.jsonError('查询失败');
-    }
-  } catch (err) {
-    responseFormat.jsonError(err);
-  }
-});
+apiProject(router, projectModel, loginModel, apiModel, crypto);
 apiInterface(router, apiModel);
 module.exports = router;
