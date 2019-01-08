@@ -55,8 +55,7 @@ class Http {
       let code = res.data.code.substr(res.data.code.length - 4); // 截取code的后四位
       if (code === '0004') {
         toastr.error('session已经过期，请重新登录!', '错误提示：');
-        console.log(history);
-        history.push('/login?redirect=home');
+        history.push('/login');
         let data = res.data;
         data.success = false;
         return data;
