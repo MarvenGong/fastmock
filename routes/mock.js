@@ -46,7 +46,7 @@ router.all('*', async function(req, res) {
           }
           // console.log('匹配到的api');
           // console.log(rightRows);
-          let mockRule = rightRows[0].mock_rule;
+          let mockRule = rightRows[0].mockRule;
           mockRule = mockRule.replace(/[\r\n]/g, '');
           // let valueJson = JSON.parse(new Function(`return ${stringUtils.trim(value)}`));
           const vm = new VM({

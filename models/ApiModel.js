@@ -1,27 +1,36 @@
-const db = require('../db/db.js');
+const entities = require('../entity');
+import Sequelize from 'sequelize';
 class ApiModel {
   countApiByProject(projectId) {
-    const querySql = `select count(1) count from api where project='${projectId}'`;
-    return db.query(querySql);
+    return entities.Api.count({
+      where: {
+        project: projectId
+      }
+    });
   }
   getApiListByProject(projectId, pageNo, pageSize) {
-    const from = pageSize * (pageNo - 1);
-    const querySql = `select * from api where project='${projectId}' limit ${from},${pageSize}`;
-    return db.query(querySql);
+    return entities.Api.findAll({
+      where: {
+        project: projectId
+      },
+      offset: pageSize * (pageNo - 1),
+      limit: pageSize / 1,
+      order: [
+        ['create_time', 'DESC']
+      ]
+    });
   }
   /**
    * 保存api， 如果有id则执行update否则执行insert
    * @param {number} api 
    */
   save(api) {
-    let sql = '';
     if (!api.id) {
-      sql = 'insert into api (name, method, url, description, project, `on`, mock_rule, create_user, create_time, update_time) values'
-      + '(?,?,?,?,?,?,?,?,?,?)';
-      return db.save(sql, [api.name, api.method, api.url, api.description, api.project, api.on, api.mockRule, api.createUser, api.createTime, api.updateTime]);
+      return entities.Api.create(api);
     } else {
-      sql = 'UPDATE api SET name=?,method=?,url=?,description=?,`on`=?,mock_rule=?,update_time=? where api.id=' + api.id;
-      return db.save(sql, [api.name, api.method, api.url, api.description, api.on, api.mockRule, api.updateTime]);
+      return entities.Api.update(api, {
+        where: { id: api.id }
+      });
     }
   }
   /**
@@ -29,32 +38,50 @@ class ApiModel {
    * @param {number} id 
    */
   deleteApi(id) {
-    return db.query('delete from api where id=' + id);
+    return entities.Api.destroy({
+      where: { id: id }
+    });
   }
   /**
    * 根聚项目id删除项目下面所有api
    * @param {number} projectId
    */
   deleteByProjectId(projectId) {
-    return db.query('delete from api where project=' + projectId);
+    return entities.Api.destroy({
+      where: { project: projectId }
+    });
   }
+  /**
+   * 查询Api详情
+   * @param {*} id 
+   */
   findApi(id) {
-    const querySql = 'select * from api where '
-      + ' api.id=' + id;
-    return db.query(querySql);
+    return entities.Api.findOne({
+      where: { id: id }
+    });
   }
+  /**
+   * 获取Api的mock规则
+   * @param {*} projectid 
+   * @param {*} apiUrl 
+   */
   findApiMock(projectid, apiUrl) {
-    const querySql = 'select mock_rule from api where api.project=' + projectid
-      + ' and api.url="' + apiUrl + '"'; 
-    return db.query(querySql);
+    return entities.Api.findAll({
+      where: {
+        project: projectid,
+        url: apiUrl
+      },
+      attributes: ['mockRule']
+    })
   }
   /**
    * 获取项目的所有api
    * @param {number} projectid 
    */
   findApiByProjectId(projectid) {
-    const querySql = 'select * from api where api.project=' + projectid; 
-    return db.query(querySql);
+    return entities.Api.findAll({
+      where: { project: projectid }
+    })
   }
 }
 export default ApiModel;

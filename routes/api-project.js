@@ -21,8 +21,6 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
   router.post('/project/add', function(req, res) {
     const responseFormat = new ResponseFormat(res);
     let userId = req.session.userId;
-    const now = new Date();
-    const nowStr = ETools.datetime.format(now, 'yyyy-MM-dd hh:mm:ss');
     const sign = ETools.string.generateUUID();
     const signMD5 = crypto.createHash('md5').update('' + sign).digest('hex');
     const project = {
@@ -30,8 +28,8 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       name: req.body.name,
       description: req.body.description,
       baseurl: req.body.baseurl,
-      create_time: nowStr,
-      update_time: nowStr,
+      // create_time: nowStr, // 创建时间和更新时间交给sequelize维护
+      // update_time: nowStr,
       sign: signMD5
     }
     projectModel.addProject(project).then(rows => {
@@ -44,6 +42,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       responseFormat.jsonError(error);
     });
   });
+  // 获取单个项目信息
   router.get('/project/:id', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
     const id = req.params.id;
@@ -51,8 +50,8 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       const resp = await projectModel.find(id);
       if (resp) {
         let p = resp[0];
-        p.mockBasePath = wwwBaseUrl + '/mock/' + p.sign + p.baseurl;
-        responseFormat.jsonSuccess({ project: p });
+        const mockBasePath = wwwBaseUrl + '/mock/' + p.sign + p.baseurl;
+        responseFormat.jsonSuccess({ project: p, mockBasePath: mockBasePath });
       }else {
         responseFormat.jsonError('查询失败');
       }
@@ -60,6 +59,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       responseFormat.jsonError(err);
     }
   });
+  // 获取项目成员（邀请的成员）
   router.get('/projectMembers/:pid', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
     let projectId = req.params.pid;
@@ -74,6 +74,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       responseFormat.jsonError(error);
     }
   });
+  // 验证成员是否已经存在
   router.get('/searchUserExtendProjectExsist', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
     const { key, projectId } = req.query;
@@ -88,6 +89,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       responseFormat.jsonError(error);
     }
   });
+  // 邀请项目成员
   router.post('/project/addmember', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
     const { projectId, userId } = req.body;
@@ -98,8 +100,8 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
         responseFormat.jsonError('该用户已经存在于当前项目，不能重复添加');
         return false;
       }
-      const resp = await projectModel.addMember(projectId, userId);
-      if (resp && resp.affectedRows > 0) {
+      const addedUserProject = await projectModel.addMember(projectId, userId);
+      if (addedUserProject) {
         responseFormat.jsonSuccess('success');
       } else {
         responseFormat.jsonError('添加失败');
@@ -108,12 +110,13 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       responseFormat.jsonError(error);
     }
   });
+  // 删除项目成员
   router.post('/project/removemember', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
     const { projectId, userId } = req.body;
     try {
       const resp = await projectModel.removeMember(projectId, userId);
-      if (resp && resp.affectedRows > 0) {
+      if (resp) {
         responseFormat.jsonSuccess('success');
       } else {
         responseFormat.jsonError('操作失败');
@@ -135,7 +138,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       const resp = await deleteMemebersPromise;
       const resp1 = await deleteApiPromise;
       const resp2 = await deleteProjectPromise;
-      if (resp && resp.affectedRows > 0 && resp1 && resp1.affectedRows > 0 && resp2 && resp2.affectedRows > 0) {
+      if (resp && resp1 && resp2) {
         responseFormat.jsonSuccess('success');
       } else {
         responseFormat.jsonError('操作失败');

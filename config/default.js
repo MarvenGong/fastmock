@@ -56,7 +56,9 @@ module.exports = {
     'logging': console.log,
     'dialectOptions': {
       'supportBigNumbers': true,
-      'bigNumberStrings': true
+      'bigNumberStrings': true,
+      charset: "utf8",
+      collate: "utf8_general_ci",
     }
   },
   'radis': null

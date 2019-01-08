@@ -1,7 +1,7 @@
 /* global http ace */
 import React from 'react';
 import PageInfo from '@/views/components/PageInfo';
-import { Table, Card, Button, Form, Drawer, Popconfirm, Tag } from 'antd';
+import { Table, Card, Button, Form, Drawer, Popconfirm, Tag, Icon } from 'antd';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
 import jsBeautifier from 'js-beautify/js/lib/beautify';
@@ -17,7 +17,6 @@ import './style.scss';
 import snippetsJs from './snippets';
 require('brace/ext/language_tools');
 const snippetManager = ace.acequire('ace/snippets').snippetManager;
-
 const EnhanceApiForm = Form.create()(ApiForm);
 const ButtonGroup = Button.Group;
 class Api extends React.Component {
@@ -58,7 +57,12 @@ class Api extends React.Component {
     this.setState({ detailLoading: true });
     const resp = await http.get('/api/project/' + id);
     if (resp.success) {
-      this.setState({ prjectInfo: resp.data.project });
+      this.setState({
+        prjectInfo: {
+          ...resp.data.project,
+          ...{ mockBasePath: resp.data.mockBasePath }
+        }
+      });
     }
     this.setState({ detailLoading: false });
   }
@@ -102,7 +106,11 @@ class Api extends React.Component {
     this.setState({ apiTestResult: '', showApiTest: false });
   }
   openAddApi = () => {
-    this.setState({ addApiVisible: true, editApiFormData: null, aceEditorValue: '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' }); // eslint-disable-line
+    this.setState({
+      addApiVisible: true,
+      editApiFormData: null,
+      aceEditorValue: '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' // eslint-disable-line
+    });
   }
   cancelAddApi = () => {
     this.setState({ addApiVisible: false });
@@ -113,7 +121,7 @@ class Api extends React.Component {
       this.setState({
         addApiVisible: true,
         editApiFormData: resp.data.apiInfo,
-        aceEditorValue: resp.data.apiInfo.mock_rule
+        aceEditorValue: resp.data.apiInfo.mockRule
       });
     }
   }
@@ -221,6 +229,7 @@ class Api extends React.Component {
             <p><span>项目ID</span>{this.state.prjectInfo.sign}</p>
           </Card>
           <Card>
+            {this.state.apiList.length > 0 &&
             <Table
               bordered
               rowKey="id"
@@ -230,6 +239,15 @@ class Api extends React.Component {
               components={this.components}
               columns={columns}
               dataSource={this.state.apiList}/>
+            }
+            {this.state.apiList.length <= 0 &&
+              <div className="empty-info">
+                <p className="content"><Icon type="dropbox"/>
+                  <span>这个项目目前还没有任何接口</span>
+                </p>
+                <p><Button size="large" onClick={this.openModifyModal} icon="plus">创建接口</Button></p>
+              </div>
+            }
           </Card>
         </section>
         {this.state.addApiVisible &&

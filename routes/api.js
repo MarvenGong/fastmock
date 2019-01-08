@@ -26,7 +26,7 @@ router.post('/login', function(req, res) {
         loginSuccess: true,
         userInfo: { ...{
           username: user.username,
-          userId: user.id
+          id: user.id
         }, token}
       });
     } else {

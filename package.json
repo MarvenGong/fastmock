@@ -21,6 +21,7 @@
     "express": "~4.15.5",
     "express-session": "^1.15.6",
     "mockjs": "^1.0.1-beta3",
+    "moment": "^2.23.0",
     "morgan": "~1.9.0",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.4",

@@ -1,4 +1,12 @@
 @import '../../styles/var.scss';
+.root-layout{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+.layout{
+  height: 100%;
+}
 .header{
   background-color: $color-theme;
 }
@@ -21,6 +29,14 @@
 }
 .ant-layout{
   background: #f5f7fa;
+}
+.ant-layout-content{
+  overflow: auto;
+}
+.ant-layout-footer{
+  overflow: visible;
+  box-shadow: 0 0 5px #999;
+  position: relative; z-index: 2
 }
 .header{
   .logo{

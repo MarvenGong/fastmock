@@ -11,7 +11,10 @@ import { createHashHistory } from 'history';
 axios.defaults.baseURL = Config.HTTPBASEURL;
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
 const history = createHashHistory();
-
+toastr.options = {
+  timeOut: 2000,
+  progressBar: true
+};
 class Http {
   constructor(routerComp) {
     this.routerComp = routerComp;

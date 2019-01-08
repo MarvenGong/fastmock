@@ -1,15 +1,23 @@
 const pathToRegexp = require('path-to-regexp');
-var loginWhitelist = [
+const loginWhitelist = [
   '/api/login',
   '/api/register',
   '/mock/*',
-  '/test'
+  /test\/[\s\S]*?/,
 ];
 module.exports = function(req,res,next){
-  var url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
+  let url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
   const mockUrlExp = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*');
   // console.log("当前请求地址" + url);
-  if (loginWhitelist.indexOf(url) === -1 && !mockUrlExp.exec(url)) {
+  const whiteListHasCurrentUrl = loginWhitelist.some(item => {
+    if (typeof item === 'string') {
+      return item === url
+    } else {
+      return item.test(url);
+    }
+    
+  });
+  if (!whiteListHasCurrentUrl && !mockUrlExp.exec(url)) {
     let reqToken = req.get('token');
     if (reqToken && req.session.token === reqToken) {
       next();

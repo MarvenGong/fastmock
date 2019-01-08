@@ -9,7 +9,7 @@ function apiInterface(router, apiModel) {
     let totalCount = 0;
     const conutRows = await apiModel.countApiByProject(projectId);
     if (conutRows) {
-      totalCount = conutRows[0]['count'];
+      totalCount = conutRows;
     }
     try {
       const apiList = await apiModel.getApiListByProject(projectId, pageNo, pageSize);
@@ -30,8 +30,6 @@ function apiInterface(router, apiModel) {
     const responseFormat = new ResponseFormat(res);
     const body = req.body;
     const userId = req.session.userId;
-    const now = new Date();
-    const nowStr = ETools.datetime.format(now, 'yyyy-MM-dd hh:mm:ss');
     let apiData = {
       id: body.id,
       name: body.name,
@@ -41,9 +39,7 @@ function apiInterface(router, apiModel) {
       mockRule: body.mockRule,
       project: body.project,
       on: body.on ? 1 : 0,
-      createUser: userId,
-      createTime: nowStr,
-      updateTime: nowStr
+      createUser: userId
     }
     try {
       const result = await apiModel.save(apiData);
@@ -61,7 +57,7 @@ function apiInterface(router, apiModel) {
     const id = req.query.id;
     try {
       const result = await apiModel.deleteApi(id);
-      if (result.affectedRows > 0) {
+      if (result) {
         responseFormat.jsonSuccess('');
       } else {
         responseFormat.jsonError('删除失败');
@@ -77,7 +73,7 @@ function apiInterface(router, apiModel) {
       const result = await apiModel.findApi(id);
       if (result) {
         responseFormat.jsonSuccess({
-          apiInfo: result[0]
+          apiInfo: result
         });
       } else {
         responseFormat.jsonError('删除失败');

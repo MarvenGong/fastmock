@@ -40,7 +40,7 @@ class PageLayout extends Component {
   }
   render() {
     return (
-      <section>
+      <section className="root-layout">
         <Layout className="layout">
           <Header className="header" style={{ height: '60px' }}>
             <div className="my-container">
