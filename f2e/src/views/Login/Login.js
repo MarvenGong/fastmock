@@ -3,10 +3,11 @@ import LoginForm from './LoginForm';
 import './Login.scss';
 import { Form } from 'antd';
 import { withRouter } from 'react-router-dom';
+import toastr from 'toastr';
 let EnhancedForm = Form.create()(LoginForm);
 class Login extends React.Component {
   componentDidMount() {
-    // console.log(this.props.query);
+    toastr.remove();
   }
   render() {
     return (

@@ -53,6 +53,7 @@ class Http {
     };
     return axios(ajaxOptions).then(res => {
       let code = res.data.code.substr(res.data.code.length - 4); // 截取code的后四位
+      toastr.remove();
       if (code === '0004') {
         toastr.error('session已经过期，请重新登录!', '错误提示：');
         history.push('/login');
@@ -71,6 +72,7 @@ class Http {
         return data;
       }
     }).catch(err => {
+      toastr.remove();
       toastr.error('网络错误', '错误提示：');
     });
   }
