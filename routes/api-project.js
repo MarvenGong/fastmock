@@ -138,11 +138,7 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
       const resp = await deleteMemebersPromise;
       const resp1 = await deleteApiPromise;
       const resp2 = await deleteProjectPromise;
-      if (resp && resp1 && resp2) {
-        responseFormat.jsonSuccess('success');
-      } else {
-        responseFormat.jsonError('操作失败');
-      }
+      responseFormat.jsonSuccess('success');
     } catch (error) {
       responseFormat.jsonError(error);
     }

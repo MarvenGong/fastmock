@@ -245,7 +245,7 @@ class Api extends React.Component {
                 <p className="content"><Icon type="dropbox"/>
                   <span>这个项目目前还没有任何接口</span>
                 </p>
-                <p><Button size="large" onClick={this.openModifyModal} icon="plus">创建接口</Button></p>
+                <p><Button size="large" onClick={this.openAddApi} icon="plus">创建接口</Button></p>
               </div>
             }
           </Card>

@@ -53,7 +53,7 @@ router.post('/register', async function(req, res) {
     }
     const pwd = crypto.createHash('md5').update('' + requestData.password).digest('hex'); // 密码加密
     requestData.password = pwd;
-    const resp3 = await loginModel.register2(requestData);
+    const resp3 = await loginModel.register(requestData);
     if (resp3.id) {
       responseFormat.jsonSuccess({
         regSuccess: true,

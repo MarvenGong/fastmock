@@ -5,6 +5,7 @@ import Projects from '../Projects/Projects';
 import Api from '../Api';
 import Home from '../Home/Home';
 import { Handbook } from '../Handbook';
+import { Feedback } from '../Feedback';
 import ProjectMenbers from '../ProjectMenbers';
 import userLogin from '../../utils/UserLogin';
 import { Route, NavLink, Redirect } from 'react-router-dom';
@@ -50,7 +51,11 @@ class PageLayout extends Component {
               <ul className="header-nav">
                 {/* <li><NavLink to='/home' activeStyle ={this.state.selectedStyle}><Icon type="home" /> 首页</NavLink></li> */}
                 <li><NavLink to='/projects' activeStyle ={this.state.selectedStyle}><Icon type="appstore" /> 我的项目</NavLink></li>
-                <li><NavLink to='/handbook' activeStyle ={this.state.selectedStyle}><Icon type="book" /> 使用文档</NavLink></li>
+                <li><a target="_blank" href="https://marvengong.github.io/fastmock-docs/book/"
+                  activeStyle ={this.state.selectedStyle}>
+                  <Icon type="book" /> 使用文档</a>
+                </li>
+                <li><NavLink to='/feedback' activeStyle ={this.state.selectedStyle}><Icon type="question" /> 问题与建议</NavLink></li>
               </ul>
               <div className="right-user">
                 <a><Icon type="user"></Icon> {'admin'}</a>
@@ -67,6 +72,7 @@ class PageLayout extends Component {
               <Route path="/handbook" component={Handbook}></Route>
               <Route exact path="/project/:id" component={Api}></Route>
               <Route path="/project/:id/menber/:pname" component={ProjectMenbers}></Route>
+              <Route path="/feedback" component={Feedback}></Route>
             </div>
           </Content>
           <Footer style={{ textAlign: 'center', backgroundColor: '#f5f5f5' }}>
