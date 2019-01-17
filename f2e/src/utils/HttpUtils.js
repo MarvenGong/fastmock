@@ -56,7 +56,7 @@ class Http {
       toastr.remove();
       if (code === '0004') {
         toastr.error('session已经过期，请重新登录!', '错误提示：');
-        history.push('/login');
+        history.push('/');
         let data = res.data;
         data.success = false;
         return data;

@@ -22,7 +22,7 @@ class LoginForm extends Component {
         });
         if (resp.success) {
           message.success('注册成功，正在跳转到登录页面...', 1);
-          this.props.history.push('/login');
+          this.props.history.push('/');
         }
       }
     });
@@ -79,7 +79,7 @@ class LoginForm extends Component {
           <Button size="large" loading={this.state.loginLoading} type="primary" htmlType="submit" className="login-form-button">
             提  交
           </Button>
-          Or <Link to="/login">返回登录!</Link>
+          Or <Link to="/">返回登录!</Link>
         </FormItem>
       </Form>
     );

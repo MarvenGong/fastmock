@@ -12,7 +12,7 @@ class FixedLaoding extends React.Component {
   render() {
     return (
       <div className="overlay" style={{ backgroundColor: this.state.bgColor || this.props.bgColor }}>
-        <Spin tip={this.props.tip || this.state.tip} spinning={true}></Spin>
+        <Spin size={this.props.size || null} tip={this.props.tip || this.state.tip} spinning={true}></Spin>
       </div>
     );
   }

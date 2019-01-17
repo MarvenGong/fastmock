@@ -7,11 +7,13 @@ import apiProject from './api-project';
 import LoginModel from '../models/LoginModel';
 import ProjectModel from '../models/ProjectModel';
 import ApiModel from '../models/ApiModel';
+import FeedbackModel from '../models/FeedbackModel';
 const { ResponseFormat } = require('../utils');
 /* GET home page. */
 const loginModel = new LoginModel();
 const projectModel = new ProjectModel();
 const apiModel = new ApiModel();
+const feedbackModel = new FeedbackModel();
 router.post('/login', function(req, res) {
   const username = req.body.username;
   const password = crypto.createHash('md5').update('' + req.body.password).digest('hex');  // 先加密后验证
@@ -21,12 +23,14 @@ router.post('/login', function(req, res) {
       const user = rows[0];
       const token = crypto.createHash('md5').update('' + user.id).digest('hex');
       req.session.token = token;
+      req.session.userInfo = user;
       req.session.userId = user.id;
       responseFormat.jsonSuccess({
         loginSuccess: true,
         userInfo: { ...{
           username: user.username,
-          id: user.id
+          id: user.id,
+          role: user.role
         }, token}
       });
     } else {
@@ -82,6 +86,24 @@ router.get('/searchUser', async function(req, res) {
       responseFormat.jsonSuccess(resp);
     } else {
       responseFormat.jsonError('搜索失败');
+    }
+  } catch (error) {
+    responseFormat.jsonError(error);
+  }
+});
+// 提交问题与建议
+router.post('/feedback', async function(req, res) {
+  const responseFormat = new ResponseFormat(res);
+  const { email, content } = req.body;
+  try {
+    const resp = await feedbackModel.addFeedback({
+      email,
+      content
+    });
+    if (resp) {
+      responseFormat.jsonSuccess(resp);
+    } else {
+      responseFormat.jsonError('提交失败');
     }
   } catch (error) {
     responseFormat.jsonError(error);

@@ -48,6 +48,13 @@ class ApiForm extends Component {
       this.props.form.setFieldsValue({ id: null, on: true });
     }
   }
+  validBaseUrl = (rule, value, callback) => {
+    if (/^\/[^\s]*[^/]$/.test(value)) {
+      callback();
+    } else {
+      callback('接口地址必须以斜杠开头不能以斜杠结尾且不能包含空格如：“/api/:id'); // eslint-disable-line
+    }
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -65,14 +72,14 @@ class ApiForm extends Component {
             initialValue: '',
             rules: [{ required: true, message: '请填写接口名' }]
           })(
-            <Input placeholder="接口名" />
+            <Input AUTOCOMPLETE="off" placeholder="接口名" />
           )}
         </FormItem>
         <FormItem label="请求类型（method）">
           {getFieldDecorator('method', {
             rules: [{ required: true, message: '请填写项目名称' }]
           })(
-            <Select placeholder="项目名称">
+            <Select placeholder="请求类型">
               <Option key="get">get</Option>
               <Option key="post">post</Option>
               <Option key="delete">delete</Option>
@@ -82,9 +89,9 @@ class ApiForm extends Component {
         </FormItem>
         <FormItem label="url">
           {getFieldDecorator('url', {
-            rules: [{ required: true, message: '请填写接口url' }]
+            rules: [{ required: true, message: '请填写接口url' }, { validator: this.validBaseUrl }]
           })(
-            <Input placeholder="接口地址（如：/api/user）" />
+            <Input AUTOCOMPLETE="off" placeholder="接口地址（如：/api/user）" />
           )}
         </FormItem>
         <FormItem label="接口描述">

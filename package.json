@@ -9,6 +9,7 @@
   "dependencies": {
     "async-each": "^1.0.1",
     "body-parser": "~1.18.2",
+    "compression": "^1.7.3",
     "config": "^3.0.1",
     "connect-redis": "^3.4.0",
     "cookie-parser": "~1.4.3",

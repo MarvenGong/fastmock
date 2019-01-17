@@ -19,14 +19,14 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       field: 'mock_rule'
     },
-    create_time: {
+    createdAt: {
       field: 'create_time',
       type: Sequelize.DATE,
       get() {
           return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
       }
     },
-    update_time: {
+    updatedAt: {
       field: 'update_time',
       type: Sequelize.DATE,
       get() {

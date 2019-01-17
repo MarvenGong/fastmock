@@ -4,8 +4,17 @@ const User = require('../entity').User;
 class LoginModel {
   constructor() {
   }
+  findAll(pageNo, pageSize) {
+    return User.findAndCountAll({
+      offset: (pageNo - 1) * pageSize,
+      limit: pageSize,
+      attributes: ['id', 'username', 'nickname', 'email', 'createdAt'],
+      order: [['create_time', 'DESC']]
+    });
+  }
   verifyLogin(username, password) {
     return User.findAll({
+      attributes: ['id', 'username', 'nickname', 'email', 'role'],
       where: {
         username: username,
         password: password

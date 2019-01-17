@@ -1,0 +1,51 @@
+<% layout('admin/layout') -%>
+<div class="page-block">
+  <div class="table-count-info">总用户数：<%=totalCount%></div>
+  <table class="layui-table">
+    <thead>
+      <tr>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>邮箱</th>
+        <th>注册时间</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% users.forEach(function(user){ %>
+          <tr>
+              <td><%= user.username %></td>
+              <td><%= user.nickname %></td>
+              <td><%= user.email %></td>
+              <td><%= user.createdAt %></td>
+            </tr>
+        <% }); %>
+    </tbody>
+  </table>
+  <input type="hidden" id="totalCount" value="<%= totalCount%>"/>
+  <input type="hidden" id="pageNo" value="<%= pageNo%>">
+  <input type="hidden" id="pageSize" value="<%= pageSize%>">
+  <div id="pagination"></div>
+  <script src="/layui/layui.all.js" charset="utf-8"></script>
+  <script>
+    layui.use(['laypage', 'layer'], function(){
+      var laypage = layui.laypage;
+      laypage.render({
+        elem: 'pagination',
+        count: document.querySelector('#totalCount').value, // 数据总数
+        limit: document.querySelector('#pageSize').value,  // 每页条数
+        curr: document.querySelector('#pageNo').value, // 当前页
+        first: '首页',
+        last: '尾页',
+        prev: '<em><</em>',
+        next: '<em>></em>',
+        layout: ['prev', 'page', 'next', 'count', 'refresh'],
+        jump: function(obj, first){
+          if(!first){
+            // layer.msg('第 '+ obj.curr +' 页');
+            window.location.href="/admin/users?pageNo=" + obj.curr + '&pageSize=' + document.querySelector('#pageSize').value
+          }
+        }
+      });
+    });
+  </script>
+</div>

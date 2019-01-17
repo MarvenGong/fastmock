@@ -1,6 +1,6 @@
 /* global http ace */
 import React from 'react';
-import PageInfo from '@/views/components/PageInfo';
+import { PageLayout, PageInfo } from '@/views/components';
 import { Table, Card, Button, Form, Drawer, Popconfirm, Tag, Icon } from 'antd';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
@@ -202,7 +202,7 @@ class Api extends React.Component {
         )
       },
       { title: '接口描述', dataIndex: 'description' },
-      { title: '创建时间', dataIndex: 'create_time' },
+      { title: '创建时间', dataIndex: 'createdAt' },
       {
         title: '操作',
         key: 'action',
@@ -218,142 +218,144 @@ class Api extends React.Component {
       }
     ];
     return (
-      <section className="api">
-        <PageInfo antIcon="appstore" pageName={this.state.prjectInfo.name} pageDesc={this.state.prjectInfo.description}>
-          <Button type="success" onClick={this.gotoProjectUserManage} icon="user">成员管理</Button>
-          <Button shape="circle" type="primary" className="add-project" onClick={this.openAddApi} icon="plus"></Button>
-        </PageInfo>
-        <section className="my-container" style={{ padding: '15px 0' }}>
-          <Card className="p-info">
-            <p><span>接口根地址</span>{this.state.prjectInfo.mockBasePath}</p>
-            <p><span>项目ID</span>{this.state.prjectInfo.sign}</p>
-          </Card>
-          <Card>
-            {this.state.apiList.length > 0 &&
-            <Table
-              bordered
-              rowKey="id"
-              size="small"
-              pagination={{ total: this.state.total, current: this.state.pageNum, pageSize: this.state.pageSize, onChange: this.jumpPage }}
-              loading={this.state.pjLoading}
-              components={this.components}
-              columns={columns}
-              dataSource={this.state.apiList}/>
-            }
-            {this.state.apiList.length <= 0 &&
-              <div className="empty-info">
-                <p className="content"><Icon type="dropbox"/>
-                  <span>这个项目目前还没有任何接口</span>
-                </p>
-                <p><Button size="large" onClick={this.openAddApi} icon="plus">创建接口</Button></p>
-              </div>
-            }
-          </Card>
-        </section>
-        {this.state.addApiVisible &&
-          <section className="api-cover animated customZoomIn">
-            <div className="attach-main">
-              <div className="form-btn-bar">
-                <ButtonGroup style={{ width: '100%' }}>
-                  <Button onClick={this.cancelAddApi} style={{ width: '33.333333%' }} icon="close">关闭</Button>
-                  <Button onClick={this.beautifyCode} style={{ width: '33.333333%' }} icon="align-left">格式化</Button>
-                  <Button onClick={this.preview} style={{ width: '33.333333%' }} icon="youtube">预览</Button>
-                </ButtonGroup>
-              </div>
-              <div className="form-box">
-                <EnhanceApiForm pid={this.state.projectId}
-                  getApiRule={this.getApiRuleEditorContent}
-                  refreshList={this.getApis}
-                  editApiFormData = {this.state.editApiFormData}
-                  closeModal={this.closeAddModal}/>
-              </div>
-            </div>
-            <div className="right-editor">
-              <AceEditor style={{ width: '100%', height: '100%' }}
-                mode={this.state.aceEditorOption.lua}
-                ref="aceEditor"
-                theme={this.state.aceEditorOption.theme}
-                fontSize={this.state.aceEditorOption.fontSize}
-                tabSize={this.state.aceEditorOption.tabSize}
-                onChange={ apiMockRuleChanged }
-                onLoad= {(editor) => {
-                  const snippets = snippetManager.parseSnippetFile('');
-                  snippetsJs.map(obj => {
-                    snippets.push(obj);
-                    return obj;
-                  });
-                  snippetManager.register(snippets, 'javascript');
-                }}
-                name="UNIQUE_ID_OF_DIV"
-                value={this.state.aceEditorValue}
-                setOptions={{
-                  enableBasicAutocompletion: true,
-                  enableLiveAutocompletion: true,
-                  enableSnippets: true,
-                  showLineNumbers: true
-                  // fontFamily: 'Arial',
-                }}
-                editorProps={{
-                  $blockScrolling: true
-                }}
-              />
-              {!this.state.aceEditorConfigVisible &&
-                <Button onClick={this.openAceEditorConfig}
-                  className="ace-editor-toggle"
-                  shape="circle" icon="setting"></Button>
+      <PageLayout>
+        <section className="api">
+          <PageInfo antIcon="appstore" pageName={this.state.prjectInfo.name} pageDesc={this.state.prjectInfo.description}>
+            <Button type="success" onClick={this.gotoProjectUserManage} icon="user">成员管理</Button>
+            <Button shape="circle" type="primary" className="add-project" onClick={this.openAddApi} icon="plus"></Button>
+          </PageInfo>
+          <section className="my-container" style={{ padding: '15px 0' }}>
+            <Card className="p-info">
+              <p><span>接口根地址</span>{this.state.prjectInfo.mockBasePath}</p>
+              <p><span>项目ID</span>{this.state.prjectInfo.sign}</p>
+            </Card>
+            <Card style={{ marginTop: '15px' }}>
+              {this.state.apiList.length > 0 &&
+              <Table
+                bordered
+                rowKey="id"
+                size="small"
+                pagination={{ total: this.state.total, current: this.state.pageNum, pageSize: this.state.pageSize, onChange: this.jumpPage }}
+                loading={this.state.pjLoading}
+                components={this.components}
+                columns={columns}
+                dataSource={this.state.apiList}/>
               }
-            </div>
+              {this.state.apiList.length <= 0 &&
+                <div className="empty-info">
+                  <p className="content"><Icon type="dropbox"/>
+                    <span>这个项目目前还没有任何接口</span>
+                  </p>
+                  <p><Button size="large" onClick={this.openAddApi} icon="plus">创建接口</Button></p>
+                </div>
+              }
+            </Card>
           </section>
-        }
-        <Drawer
-          title="编辑器样式设置"
-          placement="right"
-          closable={true}
-          mask={false}
-          onClose={this.aceEditorConfigClose}
-          visible={this.state.aceEditorConfigVisible}>
-          <p className="ae-title">字体大小</p>
-          <div className="ae-control">
-            <select className="ace-config-select" name="fontSize" value={this.state.aceEditorOption.fontSize}
-              onChange={this.setEditorOption}
-              placeholder="字体大小" style={{ width: '100%' }}>
-              {this.state.fontSizeAry.map((item, index) =>
-                (<option key={index} value={item}>{item}像素</option>)
-              )}
-            </select>
-          </div>
-          <p className="ae-title">主题</p>
-          <div className="ae-control">
-            <select className="ace-config-select" name="theme" value={this.state.aceEditorOption.theme}
-              onChange={this.setEditorOption}
-              placeholder="主题" style={{ width: '100%' }}>
-              {this.state.themeAry.map((item, index) =>
-                (<option key={index} value={item}>{item}</option>)
-              )}
-            </select>
-          </div>
-          <p className="ae-title">语言</p>
-          <div className="ae-control">
-            <select className="ace-config-select" name="lua" value={this.state.aceEditorOption.lua}
-              onChange={this.setEditorOption}
-              placeholder="语言" style={{ width: '100%' }}>
-              {this.state.aditorLuaAry.map((item, index) =>
-                (<option key={index} value={item}>{item}</option>)
-              )}
-            </select>
-          </div>
-          <p className="ae-title">缩进</p>
-          <div className="ae-control">
-            <select className="ace-config-select" name="tabSize" value={this.state.aceEditorOption.tabSize}
-              onChange={this.setEditorOption}
-              placeholder="语言" style={{ width: '100%' }}>
-              {this.state.aditorTabSizeAry.map((item, index) =>
-                (<option key={index} value={item}>{item} 个空格</option>)
-              )}
-            </select>
-          </div>
-        </Drawer>
-      </section>
+          {this.state.addApiVisible &&
+            <section className="api-cover animated customZoomIn">
+              <div className="attach-main">
+                <div className="form-btn-bar">
+                  <ButtonGroup style={{ width: '100%' }}>
+                    <Button onClick={this.cancelAddApi} style={{ width: '33.333333%' }} icon="close">关闭</Button>
+                    <Button onClick={this.beautifyCode} style={{ width: '33.333333%' }} icon="align-left">格式化</Button>
+                    <Button onClick={this.preview} style={{ width: '33.333333%' }} icon="youtube">预览</Button>
+                  </ButtonGroup>
+                </div>
+                <div className="form-box">
+                  <EnhanceApiForm pid={this.state.projectId}
+                    getApiRule={this.getApiRuleEditorContent}
+                    refreshList={this.getApis}
+                    editApiFormData = {this.state.editApiFormData}
+                    closeModal={this.closeAddModal}/>
+                </div>
+              </div>
+              <div className="right-editor">
+                <AceEditor style={{ width: '100%', height: '100%' }}
+                  mode={this.state.aceEditorOption.lua}
+                  ref="aceEditor"
+                  theme={this.state.aceEditorOption.theme}
+                  fontSize={this.state.aceEditorOption.fontSize}
+                  tabSize={this.state.aceEditorOption.tabSize}
+                  onChange={ apiMockRuleChanged }
+                  onLoad= {(editor) => {
+                    const snippets = snippetManager.parseSnippetFile('');
+                    snippetsJs.map(obj => {
+                      snippets.push(obj);
+                      return obj;
+                    });
+                    snippetManager.register(snippets, 'javascript');
+                  }}
+                  name="UNIQUE_ID_OF_DIV"
+                  value={this.state.aceEditorValue}
+                  setOptions={{
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true,
+                    enableSnippets: true,
+                    showLineNumbers: true
+                    // fontFamily: 'Arial',
+                  }}
+                  editorProps={{
+                    $blockScrolling: true
+                  }}
+                />
+                {!this.state.aceEditorConfigVisible &&
+                  <Button onClick={this.openAceEditorConfig}
+                    className="ace-editor-toggle"
+                    shape="circle" icon="setting"></Button>
+                }
+              </div>
+            </section>
+          }
+          <Drawer
+            title="编辑器样式设置"
+            placement="right"
+            closable={true}
+            mask={false}
+            onClose={this.aceEditorConfigClose}
+            visible={this.state.aceEditorConfigVisible}>
+            <p className="ae-title">字体大小</p>
+            <div className="ae-control">
+              <select className="ace-config-select" name="fontSize" value={this.state.aceEditorOption.fontSize}
+                onChange={this.setEditorOption}
+                placeholder="字体大小" style={{ width: '100%' }}>
+                {this.state.fontSizeAry.map((item, index) =>
+                  (<option key={index} value={item}>{item}像素</option>)
+                )}
+              </select>
+            </div>
+            <p className="ae-title">主题</p>
+            <div className="ae-control">
+              <select className="ace-config-select" name="theme" value={this.state.aceEditorOption.theme}
+                onChange={this.setEditorOption}
+                placeholder="主题" style={{ width: '100%' }}>
+                {this.state.themeAry.map((item, index) =>
+                  (<option key={index} value={item}>{item}</option>)
+                )}
+              </select>
+            </div>
+            <p className="ae-title">语言</p>
+            <div className="ae-control">
+              <select className="ace-config-select" name="lua" value={this.state.aceEditorOption.lua}
+                onChange={this.setEditorOption}
+                placeholder="语言" style={{ width: '100%' }}>
+                {this.state.aditorLuaAry.map((item, index) =>
+                  (<option key={index} value={item}>{item}</option>)
+                )}
+              </select>
+            </div>
+            <p className="ae-title">缩进</p>
+            <div className="ae-control">
+              <select className="ace-config-select" name="tabSize" value={this.state.aceEditorOption.tabSize}
+                onChange={this.setEditorOption}
+                placeholder="语言" style={{ width: '100%' }}>
+                {this.state.aditorTabSizeAry.map((item, index) =>
+                  (<option key={index} value={item}>{item} 个空格</option>)
+                )}
+              </select>
+            </div>
+          </Drawer>
+        </section>
+      </PageLayout>
     );
   }
 };

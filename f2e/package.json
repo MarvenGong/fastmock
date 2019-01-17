@@ -53,6 +53,7 @@
     "react-app-rewired": "^1.6.2",
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.6.3",
+    "react-loadable": "^5.5.0",
     "react-router-dom": "^4.3.1",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
@@ -127,6 +128,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-html": "^5.0.0",
     "eslint-plugin-node": "^8.0.0",
