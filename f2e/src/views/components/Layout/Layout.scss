@@ -36,6 +36,7 @@
 .ant-layout-footer{
   overflow: visible;
   box-shadow: 0 0 5px #999;
+  padding: 15px 20px;
   position: relative; z-index: 2
 }
 .header{
@@ -62,6 +63,7 @@
   height: 100px;
   padding: 25px 0;
   background-color: #fff;
+  box-shadow: 0 0 5px #999;
   .page-logo{
     width: 50px;
     height: 50px;
@@ -93,6 +95,18 @@
     text-align: right;
     .ant-btn{
       margin: 0 5px;
+    }
+  }
+}
+.p-footer{
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  background-color: #f5f5f5;
+  p{
+    margin-bottom: 3px;
+    &.beian{
+      
     }
   }
 }

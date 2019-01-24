@@ -1,5 +1,5 @@
 module.exports = {
-  'wwwBaseUrl': 'http://129.204.116.48:3000',
+  'wwwBaseUrl': 'https://www.fastmock.site',
   'enviroment': 'prod',
   'db': {
     'password'        : 'ling.520*1314',

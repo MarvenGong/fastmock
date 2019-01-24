@@ -81,8 +81,9 @@ class PageLayout extends Component {
               {this.props.children}
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center', backgroundColor: '#f5f5f5' }}>
-            FastMock在线Mock平台
+          <Footer className="p-footer">
+            <p>&copy; All rights reserved FastMock在线Mock平台</p>
+            <p className="beian">渝ICP备19000613号-2</p>
           </Footer>
         </Layout>
       </section>

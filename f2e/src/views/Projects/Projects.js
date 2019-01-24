@@ -5,6 +5,7 @@ import { FixedLoading } from '@/components';
 import { PageLayout } from '@/views/components';
 import PageInfo from '@/views/components/PageInfo';
 import { message, Form, Row, Col, Card, Icon, Spin, Button, Modal, Radio, Alert, Input } from 'antd';
+import QueueAnim from 'rc-queue-anim';
 import ProjectForm from './ProjectForm';
 import userLogin from '@/utils/UserLogin';
 import './style.scss';
@@ -133,41 +134,43 @@ class Projects extends Component {
             {this.state.pjList.length > 0 &&
               <Row gutter={16}>
                 {this.state.pjList.map((p, i) =>
-                  <Col key={i} span={6} style={{ marginBottom: '10px' }}>
-                    <Card className="project-card"
-                      actions={this.state.userId === p.create_user ? [
-                        <Link to={'/project/' + p.id}><Icon type="eye" /></Link>,
-                        <span style={{ display: 'inline-block', width: '100%' }} onClick={() => this.toggleDeleteProject(i, true)}><Icon style={{ color: '#f33' }} type="delete" /></span>
-                      ] : [
-                        <Link to={'/project/' + p.id}><Icon type="eye" /></Link>
-                      ]}
-                      headStyle={{ borderBottom: 'none' }}
-                      title={p.name} bordered={false}>
-                      <p className="purl">{p.baseurl}</p>
-                      <p className="pdesc">{p.description}</p>
-                      {this.state.userId === p.create_user && p.showDeleteCard &&
-                        <div className="p-card animated customZoomIn">
-                          <Alert
-                            message="删除项目将会移除其下面所有的接口且不可恢复" showIcon
-                            type="error"
-                          />
-                          <div className="p">若你任想删除，请完整输入当前项目名以确认删除</div>
-                          <div className="p"><Input value={this.state.sureDeleteProjectName}
-                            onChange={this.sureDeleteProjectNameChanged}
-                            onPaste={this.disableDeletePaste} placeholder="项目名" /></div>
-                          <div className="p">
-                            <Row gutter={16}>
-                              <Col span={12}><Button onClick={() => this.toggleDeleteProject(i, false)} type="primary" block>取消</Button></Col>
-                              <Col span={12}><Button onClick={() => this.sureDeleteProject(p.id, p.name)} type="danger" block>确定</Button></Col>
-                            </Row>
+                  <QueueAnim type="bottom" duration={800}>
+                    <Col key={i} span={6} style={{ marginBottom: '10px' }}>
+                      <Card className="project-card"
+                        actions={this.state.userId === p.create_user ? [
+                          <Link to={'/project/' + p.id}><Icon type="eye" /></Link>,
+                          <span style={{ display: 'inline-block', width: '100%' }} onClick={() => this.toggleDeleteProject(i, true)}><Icon style={{ color: '#f33' }} type="delete" /></span>
+                        ] : [
+                          <Link to={'/project/' + p.id}><Icon type="eye" /></Link>
+                        ]}
+                        headStyle={{ borderBottom: 'none' }}
+                        title={p.name} bordered={false}>
+                        <p className="purl">{p.baseurl}</p>
+                        <p className="pdesc">{p.description}</p>
+                        {this.state.userId === p.create_user && p.showDeleteCard &&
+                          <div className="p-card animated customZoomIn">
+                            <Alert
+                              message="删除项目将会移除其下面所有的接口且不可恢复" showIcon
+                              type="error"
+                            />
+                            <div className="p">若你任想删除，请完整输入当前项目名以确认删除</div>
+                            <div className="p"><Input value={this.state.sureDeleteProjectName}
+                              onChange={this.sureDeleteProjectNameChanged}
+                              onPaste={this.disableDeletePaste} placeholder="项目名" /></div>
+                            <div className="p">
+                              <Row gutter={16}>
+                                <Col span={12}><Button onClick={() => this.toggleDeleteProject(i, false)} type="primary" block>取消</Button></Col>
+                                <Col span={12}><Button onClick={() => this.sureDeleteProject(p.id, p.name)} type="danger" block>确定</Button></Col>
+                              </Row>
+                            </div>
+                            {this.state.deleteLoading &&
+                              <FixedLoading tip="删除中..."></FixedLoading>
+                            }
                           </div>
-                          {this.state.deleteLoading &&
-                            <FixedLoading tip="删除中..."></FixedLoading>
-                          }
-                        </div>
-                      }
-                    </Card>
-                  </Col>
+                        }
+                      </Card>
+                    </Col>
+                  </QueueAnim>
                 )}
               </Row>
             }

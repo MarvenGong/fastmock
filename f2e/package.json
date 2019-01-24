@@ -46,6 +46,7 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.0.6",
     "postcss-safe-parser": "4.0.1",
+    "rc-queue-anim": "^1.6.10",
     "react": "^16.6.3",
     "react-ace": "^6.2.0",
     "react-app-polyfill": "^0.1.3",

@@ -2,6 +2,7 @@
 import React from 'react';
 import { PageLayout, PageInfo } from '@/views/components';
 import { Table, Card, Button, Form, Drawer, Popconfirm, Tag, Icon } from 'antd';
+import QueueAnim from 'rc-queue-anim';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
 import jsBeautifier from 'js-beautify/js/lib/beautify';
