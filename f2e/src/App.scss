@@ -84,3 +84,16 @@
 .text-333{
   color: #666;
 }
+.login-link{
+  &:hover{text-decoration: underline}
+}
+.login-footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #f2f2f2; font-size: 12px;
+  padding: 15px;
+  p{margin-bottom: 4px;}
+}

@@ -16,6 +16,10 @@ class Login extends React.Component {
             <EnhancedForm></EnhancedForm>
           </div>
         </div>
+        <div className="login-footer">
+          <p>&copy; All rights reserved FastMock在线Mock平台</p>
+          <p className="beian">渝ICP备19000613号-2</p>
+        </div>
       </div>
     );
   }

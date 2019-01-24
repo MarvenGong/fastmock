@@ -79,7 +79,7 @@ class LoginForm extends Component {
           <Button size="large" loading={this.state.loginLoading} type="primary" htmlType="submit" className="login-form-button">
             提  交
           </Button>
-          Or <Link to="/">返回登录!</Link>
+          <div style={{ textAlign: 'center' }}><Link className="login-link" to="/" style={{ color: '#339966' }}>已经有账号？返回登录</Link></div>
         </FormItem>
       </Form>
     );

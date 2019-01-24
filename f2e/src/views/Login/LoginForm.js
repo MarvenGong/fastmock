@@ -57,7 +57,7 @@ class LoginForm extends Component {
           <Button size="large" loading={this.state.loginLoading} type="primary" htmlType="submit" className="login-form-button">
             登  录
           </Button>
-          <Link to="/register">注册!</Link>
+          <div style={{ textAlign: 'center' }}><Link to="/register" className="login-link" style={{ color: '#339966' }}>还没有账号？注册账号</Link></div>
         </FormItem>
       </Form>
     );
