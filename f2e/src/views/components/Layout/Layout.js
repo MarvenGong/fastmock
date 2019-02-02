@@ -54,7 +54,7 @@ class PageLayout extends Component {
               <ul className="header-nav">
                 {/* <li><NavLink to='/home' activeStyle ={this.state.selectedStyle}><Icon type="home" /> 首页</NavLink></li> */}
                 <li><NavLink to='/projects' activeStyle ={this.state.selectedStyle}><Icon type="appstore" /> 我的项目</NavLink></li>
-                <li><a rel="noopener noreferrer" target="_blank" href="https://marvengong.github.io/fastmock-docs/book/">
+                <li><a rel="noopener noreferrer" target="_blank" href="//fmdocs.fastmock.site">
                   <Icon type="book" /> 使用文档</a>
                 </li>
                 <li><NavLink to='/feedback' activeStyle ={this.state.selectedStyle}><Icon type="question" /> 问题与建议</NavLink></li>
