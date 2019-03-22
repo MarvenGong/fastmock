@@ -8,7 +8,12 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
     let userId = req.session.userId;
     let source = req.query.source;
     try {
-      const rows = await projectModel.getProjectList(userId, source);
+      let rows = [];
+      if (req.session.userInfo.role === 1) {
+        rows = await projectModel.getAllProjects();
+      } else {
+        rows = await projectModel.getProjectList(userId, source);
+      }
       if (rows) {
         responseFormat.jsonSuccess({ projectList: rows });
       } else {

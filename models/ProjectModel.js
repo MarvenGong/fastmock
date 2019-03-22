@@ -45,6 +45,19 @@ class ProjectModel {
     }
   }
   /**
+   * 管理员身份获取所有项目列表
+   */
+  getAllProjects() {
+    return entities.Project.findAll({
+      where: {},
+      include: {
+        attributes: ['username', 'nickname'],
+        model: entities.User,
+        as: 'createUser'
+      }
+    });
+  }
+  /**
    * 根据id查询项目信息
    * @param {number} id 
    */

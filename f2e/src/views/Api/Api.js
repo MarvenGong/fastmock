@@ -1,8 +1,7 @@
 /* global http ace */
 import React from 'react';
 import { PageLayout, PageInfo } from '@/views/components';
-import { Table, Card, Button, Form, Drawer, Popconfirm, Tag, Icon } from 'antd';
-import QueueAnim from 'rc-queue-anim';
+import { Table, Card, Button, Form, Popconfirm, Tag, Icon } from 'antd';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
 import jsBeautifier from 'js-beautify/js/lib/beautify';
@@ -37,7 +36,6 @@ class Api extends React.Component {
     apiList: [],
     addApiVisible: false,
     data: '',
-    aceEditorConfigVisible: false,
     fontSizeAry: [12, 14, 16, 18, 20, 24, 26, 28, 30, 32],
     themeAry: ['terminal', 'xcode', 'monokai', 'twilight'],
     aditorLuaAry: ['javascript', 'json', 'html'],
@@ -110,7 +108,7 @@ class Api extends React.Component {
     this.setState({
       addApiVisible: true,
       editApiFormData: null,
-      aceEditorValue: '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' // eslint-disable-line
+      aceEditorValue: ''// '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' // eslint-disable-line
     });
   }
   cancelAddApi = () => {
@@ -135,10 +133,6 @@ class Api extends React.Component {
   // 获取编辑器的值
   getApiRuleEditorContent = () => {
     return this.refs['aceEditor'].editor.getValue();
-  }
-  // 打开编辑器配置
-  openAceEditorConfig = () => {
-    this.setState({ aceEditorConfigVisible: true });
   }
   aceEditorConfigClose = () => {
     this.setState({ aceEditorConfigVisible: false });
@@ -176,6 +170,9 @@ class Api extends React.Component {
   }
   previewSingleApi = (url) => {
     window.open(this.state.prjectInfo.mockBasePath + url);
+  }
+  openRuleDemo = () => {
+    window.open('http://fmdocs.fastmock.site/book/ruledemo.html');
   }
   render() {
     const apiMockRuleChanged = value => {
@@ -271,6 +268,36 @@ class Api extends React.Component {
                 </div>
               </div>
               <div className="right-editor">
+                <div className="top-actions">
+                  <Button style={{ 'border-radius': 0 }} onClick={this.openRuleDemo} type="primary" icon="question">查看代码示例</Button>
+                  <span className="action-name">字体大小:</span>
+                  <select className="ace-config-select" name="fontSize" value={this.state.aceEditorOption.fontSize}
+                    onChange={this.setEditorOption}
+                    style={{ height: '24px' }}
+                    placeholder="字体大小">
+                    {this.state.fontSizeAry.map((item, index) =>
+                      (<option key={index} value={item}>{item}像素</option>)
+                    )}
+                  </select>
+                  <span className="action-name">语言:</span>
+                  <select className="ace-config-select" name="lua" value={this.state.aceEditorOption.lua}
+                    onChange={this.setEditorOption}
+                    size="small" style={{ height: '24px' }}
+                    placeholder="语言">
+                    {this.state.aditorLuaAry.map((item, index) =>
+                      (<option key={index} value={item}>{item}</option>)
+                    )}
+                  </select>
+                  <span className="action-name">tab类型:</span>
+                  <select className="ace-config-select" name="tabSize" value={this.state.aceEditorOption.tabSize}
+                    onChange={this.setEditorOption}
+                    style={{ height: '24px' }}
+                    placeholder="tab类型">
+                    {this.state.aditorTabSizeAry.map((item, index) =>
+                      (<option key={index} value={item}>{item} 个空格</option>)
+                    )}
+                  </select>
+                </div>
                 <AceEditor style={{ width: '100%', height: '100%' }}
                   mode={this.state.aceEditorOption.lua}
                   ref="aceEditor"
@@ -299,62 +326,9 @@ class Api extends React.Component {
                     $blockScrolling: true
                   }}
                 />
-                {!this.state.aceEditorConfigVisible &&
-                  <Button onClick={this.openAceEditorConfig}
-                    className="ace-editor-toggle"
-                    shape="circle" icon="setting"></Button>
-                }
               </div>
             </section>
           }
-          <Drawer
-            title="编辑器样式设置"
-            placement="right"
-            closable={true}
-            mask={false}
-            onClose={this.aceEditorConfigClose}
-            visible={this.state.aceEditorConfigVisible}>
-            <p className="ae-title">字体大小</p>
-            <div className="ae-control">
-              <select className="ace-config-select" name="fontSize" value={this.state.aceEditorOption.fontSize}
-                onChange={this.setEditorOption}
-                placeholder="字体大小" style={{ width: '100%' }}>
-                {this.state.fontSizeAry.map((item, index) =>
-                  (<option key={index} value={item}>{item}像素</option>)
-                )}
-              </select>
-            </div>
-            <p className="ae-title">主题</p>
-            <div className="ae-control">
-              <select className="ace-config-select" name="theme" value={this.state.aceEditorOption.theme}
-                onChange={this.setEditorOption}
-                placeholder="主题" style={{ width: '100%' }}>
-                {this.state.themeAry.map((item, index) =>
-                  (<option key={index} value={item}>{item}</option>)
-                )}
-              </select>
-            </div>
-            <p className="ae-title">语言</p>
-            <div className="ae-control">
-              <select className="ace-config-select" name="lua" value={this.state.aceEditorOption.lua}
-                onChange={this.setEditorOption}
-                placeholder="语言" style={{ width: '100%' }}>
-                {this.state.aditorLuaAry.map((item, index) =>
-                  (<option key={index} value={item}>{item}</option>)
-                )}
-              </select>
-            </div>
-            <p className="ae-title">缩进</p>
-            <div className="ae-control">
-              <select className="ace-config-select" name="tabSize" value={this.state.aceEditorOption.tabSize}
-                onChange={this.setEditorOption}
-                placeholder="语言" style={{ width: '100%' }}>
-                {this.state.aditorTabSizeAry.map((item, index) =>
-                  (<option key={index} value={item}>{item} 个空格</option>)
-                )}
-              </select>
-            </div>
-          </Drawer>
         </section>
       </PageLayout>
     );

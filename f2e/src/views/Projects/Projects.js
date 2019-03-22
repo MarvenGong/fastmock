@@ -17,6 +17,7 @@ class Projects extends Component {
     modifyVisible: false,
     source: 'all',
     sureDeleteProjectName: '',
+    userInfo: {},
     deleteLoading: false
   }
   /**
@@ -114,19 +115,24 @@ class Projects extends Component {
   }
   componentDidMount() {
     this.getProjects('all');
-    this.setState({ 'userId': userLogin.getLoginInfo().id });
+    this.setState({
+      'userId': userLogin.getLoginInfo().id,
+      userInfo: userLogin.getLoginInfo()
+    });
   }
   render() {
     return (
       <PageLayout>
         <div className="projects">
           <PageInfo antIcon="user" pageName="我的项目" pageDesc="将正在进行的项目添加到工作台中以提高工作效率。">
-            <Radio.Group defaultValue="all" value={this.state.source}
-              buttonStyle="solid" onChange={this.sourceChanged}>
-              <Radio.Button value="all">所有</Radio.Button>
-              <Radio.Button value="create">由我创建</Radio.Button>
-              <Radio.Button value="join">我加入的</Radio.Button>
-            </Radio.Group>
+            {this.state.userInfo.role / 1 !== 1 &&
+              <Radio.Group defaultValue="all" value={this.state.source}
+                buttonStyle="solid" onChange={this.sourceChanged}>
+                <Radio.Button value="all">所有</Radio.Button>
+                <Radio.Button value="create">由我创建</Radio.Button>
+                <Radio.Button value="join">我加入的</Radio.Button>
+              </Radio.Group>
+            }
             <Button shape="circle" type="primary" className="add-project" onClick={this.openModifyModal} icon="plus"></Button>
           </PageInfo>
           <section className="my-container" style={{ padding: '15px 0' }}>
@@ -134,7 +140,7 @@ class Projects extends Component {
             {this.state.pjList.length > 0 &&
               <Row gutter={16}>
                 {this.state.pjList.map((p, i) =>
-                  <QueueAnim type="bottom" duration={800}>
+                  <QueueAnim key={i} type="bottom" duration={800}>
                     <Col key={i} span={6} style={{ marginBottom: '10px' }}>
                       <Card className="project-card"
                         actions={this.state.userId === p.create_user ? [
@@ -145,6 +151,9 @@ class Projects extends Component {
                         ]}
                         headStyle={{ borderBottom: 'none' }}
                         title={p.name} bordered={false}>
+                        {this.state.userInfo.role / 1 === 1 &&
+                          <p className="purl">创建者：{p.createUser.nickname}</p>
+                        }
                         <p className="purl">{p.baseurl}</p>
                         <p className="pdesc">{p.description}</p>
                         {this.state.userId === p.create_user && p.showDeleteCard &&

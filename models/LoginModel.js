@@ -28,6 +28,13 @@ class LoginModel {
       }
     });
   }
+  findUserByUserId(userId) {
+    return User.findAll({
+      where: {
+        id: userId
+      }
+    });
+  }
   findUserByEmail(email) {
     return User.findAll({
       where: {

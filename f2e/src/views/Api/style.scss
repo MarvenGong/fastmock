@@ -80,12 +80,17 @@
     background: #fff;
     position: relative;
     margin-left: 350px;
-    height: 100%;
-    .ace-editor-toggle{
+    height: calc(100% - 32px);
+    padding-top: 32px;
+    .top-actions{
+      height: 32px;
       position: absolute;
-      right: 20px;
-      top: 48%;
-      z-index: 100
+      left: 0; top: 0;
+      width: 100%;
+      .action-name{
+        font-size: 12px;
+        margin-left: 10px;
+      }
     }
   }
 }

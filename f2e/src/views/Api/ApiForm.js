@@ -28,7 +28,7 @@ class ApiForm extends Component {
         if (resp.success) {
           message.success('保存成功');
           this.props.refreshList();
-          this.props.closeModal();
+          // this.props.closeModal();
         }
       }
     });
@@ -108,7 +108,7 @@ class ApiForm extends Component {
         </FormItem>
         <FormItem style={{ marginTop: '15px', textAlign: 'center' }}>
           <Button style={{ width: '120px' }} loading={this.state.submitLoading} type="primary" htmlType="submit">
-            提交
+            保&emsp;存
           </Button>
         </FormItem>
       </Form>

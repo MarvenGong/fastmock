@@ -4,10 +4,10 @@ const pathToRegexp = require('path-to-regexp'); // https://www.npmjs.com/package
 import { ApiModel, ProjectModel } from '../models';
 import Mock from 'mockjs';
 import { VM } from 'vm2';
-const { ResponseFormat } = require('../utils');
+const { ResponseFormat, StringUtils } = require('../utils');
+const stringUtils = new StringUtils();
 const apiModel = new ApiModel();
 const projectModel = new ProjectModel();
-// const stringUtils = new StringUtils();
 router.all('*', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
   res.header('Access-Control-Allow-Origin', '*');
@@ -16,6 +16,7 @@ router.all('*', async function(req, res) {
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
+  console.log(req);
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
   // console.log(pathNode);
   if (!pathNode) {
@@ -46,8 +47,18 @@ router.all('*', async function(req, res) {
           }
           // console.log('匹配到的api');
           // console.log(rightRows);
+          const api = rightRows[0];
           let mockRule = rightRows[0].mockRule;
           mockRule = mockRule.replace(/[\r\n]/g, '');
+          Mock.Handler.function = function (options) {
+            const currMockUrl = api.url.replace(/{/g, ':').replace(/}/g, '') // /api/{user}/{id} => /api/:user/:id
+            options.Mock = Mock
+            options._req = req;
+            options._req.params = stringUtils.params(currMockUrl, mockUrl); // 从/api/:user/:id格式的/api/1/2中得到{user:1, id:2}
+            options._req.cookies = req.cookies;
+            options._req.headers = req.headers;
+            return options.template.call(options.context.currentContext, options);
+          }
           // let valueJson = JSON.parse(new Function(`return ${stringUtils.trim(value)}`));
           const vm = new VM({
             timeout: 1000,
