@@ -1,7 +1,8 @@
 /* global http ace */
 import React from 'react';
 import { PageLayout, PageInfo } from '@/views/components';
-import { Table, Card, Button, Form, Popconfirm, Tag, Icon } from 'antd';
+import { Table, Card, Button, Form, Popconfirm, Tag, Icon, Tooltip, message } from 'antd';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
 import jsBeautifier from 'js-beautify/js/lib/beautify';
@@ -174,6 +175,9 @@ class Api extends React.Component {
   openRuleDemo = () => {
     window.open('http://fmdocs.fastmock.site/book/ruledemo.html');
   }
+  urlCopyed = () => {
+    message.success('地址已复制到粘贴板');
+  }
   render() {
     const apiMockRuleChanged = value => {
       // console.log(self.refs['aceEditor'].editor.getValue());
@@ -196,7 +200,11 @@ class Api extends React.Component {
       },
       { title: '接口地址',
         render: (text, record) => (
-          <Tag style={{ textAlign: 'center' }}>{record.url}</Tag>
+          <Tooltip title="复制接口相对地址">
+            <CopyToClipboard onCopy={() => this.urlCopyed()} text={record.url}>
+              <Tag style={{ textAlign: 'center' }}>{record.url}</Tag>
+            </CopyToClipboard>
+          </Tooltip>
         )
       },
       { title: '接口描述', dataIndex: 'description' },
@@ -206,8 +214,17 @@ class Api extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Button onClick={() => this.previewSingleApi(record.url)} icon="eye" size="small"></Button>
-            <Button onClick={() => this.openEditApi(record.id)} icon="edit" size="small" type="primary"></Button>
+            <Tooltip title="预览接口">
+              <Button onClick={() => this.previewSingleApi(record.url)} icon="eye" size="small"></Button>
+            </Tooltip>
+            <Tooltip title="复制完整接口地址">
+              <CopyToClipboard onCopy={() => this.urlCopyed()} text={this.state.prjectInfo.mockBasePath + record.url}>
+                <Button icon="copy" size="small"></Button>
+              </CopyToClipboard>
+            </Tooltip>
+            <Tooltip title="编辑接口">
+              <Button onClick={() => this.openEditApi(record.id)} icon="edit" size="small" type="primary"></Button>
+            </Tooltip>
             <Popconfirm title="确定删除这个接口吗？" okText="确定" cancelText="取消" onConfirm={() => this.deleteApi(record.id)}>
               <Button icon="delete" size="small" type="danger"></Button>
             </Popconfirm>
@@ -224,7 +241,14 @@ class Api extends React.Component {
           </PageInfo>
           <section className="my-container" style={{ padding: '15px 0' }}>
             <Card className="p-info">
-              <p><span>接口根地址</span>{this.state.prjectInfo.mockBasePath}</p>
+              <p>
+                <span>接口根地址</span>
+                <Tooltip title="复制接口根地址">
+                  <CopyToClipboard onCopy={() => this.urlCopyed()} text={this.state.prjectInfo.mockBasePath}>
+                    <span>{this.state.prjectInfo.mockBasePath}</span>
+                  </CopyToClipboard>
+                </Tooltip>
+              </p>
               <p><span>项目ID</span>{this.state.prjectInfo.sign}</p>
             </Card>
             <Card style={{ marginTop: '15px' }}>

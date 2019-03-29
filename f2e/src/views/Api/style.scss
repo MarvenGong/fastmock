@@ -10,7 +10,7 @@
     padding-left: 135px;
     margin-bottom: 10px;
     &:last-child{margin-bottom: 0}
-    & > span {
+    & > span:first-child {
       display: inline-block;
       height: 32px; line-height: 32px;
       position: absolute; left: 0; top: 0;

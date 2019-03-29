@@ -16,7 +16,6 @@ router.all('*', async function(req, res) {
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
-  console.log(req);
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
   // console.log(pathNode);
   if (!pathNode) {
@@ -70,7 +69,7 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
-          responseFormat.jsonSuccess(apiData);
+          res.send(apiData);
         } else {
           responseFormat.jsonError('查询失败');
         }
