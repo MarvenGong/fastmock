@@ -42,6 +42,12 @@ function apiInterface(router, apiModel) {
       createUser: userId
     }
     try {
+      // 新增模式下验证url是否已经存在
+      const curProjectUrl = await apiModel.checkProjectApiUrlExsist(apiData.project, apiData.url);
+      if (!apiData.id && curProjectUrl && curProjectUrl.length > 0) {
+        responseFormat.jsonError('您输入的url在当前项目中已经存在！');
+        return false;
+      }
       const result = await apiModel.save(apiData);
       if (result) {
         responseFormat.jsonSuccess(apiData);

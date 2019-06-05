@@ -21,6 +21,17 @@ class ApiModel {
     });
   }
   /**
+   * 检查当前下面是否已经存在接口地址
+   */
+  checkProjectApiUrlExsist(projectId, url) {
+    return entities.Api.findAll({
+      where: {
+        project: projectId,
+        url: url
+      }
+    });
+  }
+  /**
    * 保存api， 如果有id则执行update否则执行insert
    * @param {number} api 
    */

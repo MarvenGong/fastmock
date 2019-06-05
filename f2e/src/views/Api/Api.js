@@ -36,6 +36,7 @@ class Api extends React.Component {
     total: 0,
     apiList: [],
     addApiVisible: false,
+    apiModalType: 'add',
     data: '',
     fontSizeAry: [12, 14, 16, 18, 20, 24, 26, 28, 30, 32],
     themeAry: ['terminal', 'xcode', 'monokai', 'twilight'],
@@ -108,6 +109,7 @@ class Api extends React.Component {
   openAddApi = () => {
     this.setState({
       addApiVisible: true,
+      apiModalType: 'add',
       editApiFormData: null,
       aceEditorValue: ''// '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' // eslint-disable-line
     });
@@ -120,6 +122,7 @@ class Api extends React.Component {
     if (resp.success) {
       this.setState({
         addApiVisible: true,
+        apiModalType: 'edit',
         editApiFormData: resp.data.apiInfo,
         aceEditorValue: resp.data.apiInfo.mockRule
       });
@@ -159,6 +162,15 @@ class Api extends React.Component {
       aceEditorValue: currentEditorValue
     });
   }
+  /**
+   * 编辑器内容更改
+   * @param {*} value
+   */
+  onAceEditorChange(value) {
+    this.setState({
+      aceEditorValue: value
+    });
+  }
   beautifyCode = () => {
     const currentEditorValue = this.refs['aceEditor'].editor.getValue();
     const res = jsBeautifier.js_beautify(currentEditorValue, { indent_size: 2 });
@@ -179,9 +191,6 @@ class Api extends React.Component {
     message.success('地址已复制到粘贴板');
   }
   render() {
-    const apiMockRuleChanged = value => {
-      // console.log(self.refs['aceEditor'].editor.getValue());
-    };
     const columns = [
       { title: '接口名称', dataIndex: 'name' },
       { title: '请求类型',
@@ -284,16 +293,18 @@ class Api extends React.Component {
                   </ButtonGroup>
                 </div>
                 <div className="form-box">
-                  <EnhanceApiForm pid={this.state.projectId}
+                  <EnhanceApiForm
+                    ref="apiForm" pid={this.state.projectId}
                     getApiRule={this.getApiRuleEditorContent}
                     refreshList={this.getApis}
+                    apiModalType={this.state.apiModalType}
                     editApiFormData = {this.state.editApiFormData}
                     closeModal={this.closeAddModal}/>
                 </div>
               </div>
               <div className="right-editor">
                 <div className="top-actions">
-                  <Button style={{ 'border-radius': 0 }} onClick={this.openRuleDemo} type="primary" icon="question">查看代码示例</Button>
+                  <Button style={{ borderRadius: 0 }} onClick={this.openRuleDemo} type="primary" icon="question">查看代码示例</Button>
                   <span className="action-name">字体大小:</span>
                   <select className="ace-config-select" name="fontSize" value={this.state.aceEditorOption.fontSize}
                     onChange={this.setEditorOption}
@@ -328,7 +339,6 @@ class Api extends React.Component {
                   theme={this.state.aceEditorOption.theme}
                   fontSize={this.state.aceEditorOption.fontSize}
                   tabSize={this.state.aceEditorOption.tabSize}
-                  onChange={ apiMockRuleChanged }
                   onLoad= {(editor) => {
                     const snippets = snippetManager.parseSnippetFile('');
                     snippetsJs.map(obj => {
@@ -337,6 +347,7 @@ class Api extends React.Component {
                     });
                     snippetManager.register(snippets, 'javascript');
                   }}
+                  onChange={(e) => this.onAceEditorChange(e)}
                   name="UNIQUE_ID_OF_DIV"
                   value={this.state.aceEditorValue}
                   setOptions={{
