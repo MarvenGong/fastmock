@@ -7,15 +7,23 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
     const responseFormat = new ResponseFormat(res);
     let userId = req.session.userId;
     let source = req.query.source;
+    const pageNo = req.query.pageNo || 1;
+    const pageSize = req.query.pageSize || 12;
     try {
       let rows = [];
+      let totalRecord = 0;
       if (req.session.userInfo.role === 1) {
-        rows = await projectModel.getAllProjects();
+        rows = await projectModel.getAllProjects(pageNo, pageSize);
+        totalRecord = await projectModel.countAllProject();
       } else {
         rows = await projectModel.getProjectList(userId, source);
       }
       if (rows) {
-        responseFormat.jsonSuccess({ projectList: rows });
+        responseFormat.jsonSuccess({
+          pageNo: pageNo / 1,
+          totalRecord: totalRecord,
+          projectList: rows
+        });
       } else {
         responseFormat.jsonError('查询失败');
       }

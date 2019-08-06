@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=production babel-node ./bin/www --presets es2015,stage-2"
   },
   "dependencies": {
+    "@koa/cors": "^3.0.0",
     "async-each": "^1.0.1",
     "body-parser": "~1.18.2",
     "compression": "^1.7.3",

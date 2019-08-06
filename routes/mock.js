@@ -10,10 +10,12 @@ const apiModel = new ApiModel();
 const projectModel = new ProjectModel();
 router.all('*', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
-  res.header('Access-Control-Allow-Origin', '*');
+  // res.header('Access-Control-Allow-Origin', '*');
   //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', '*');
+  // res.header('Access-Control-Allow-Headers', 'Content-Type');
+  // res.header('Access-Control-Allow-Headers', '*');
+  // res.header('Access-Control-Allow-Methods', '*');
+  // res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);

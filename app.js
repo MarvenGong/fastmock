@@ -21,23 +21,15 @@ var app = express();
 var loginMiddleware = require('./middlewares/login');
 
 // 跨域允许
-var whitelist = ['http://localhost:8888', 'http://localhost:3000']
 var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  "optionsSuccessStatus": 200,
-  allowedHeaders: ['Content-Type', 'token', 'Authorization', 'X-Requested-With', 'Origin', 'Accept'],
-  credentials: true
+  origin: true,
+  credentials: true,
+  maxAge: 2592000
 }
 global.config = config;
 // 压缩相应资源
 app.use(compression());
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 // view engine setup
 app.engine('html', require('ejs-mate'));
 app.set('views', path.join(__dirname, 'views'));

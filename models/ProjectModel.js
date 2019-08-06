@@ -46,16 +46,25 @@ class ProjectModel {
   }
   /**
    * 管理员身份获取所有项目列表
+   * pageNo 分页
    */
-  getAllProjects() {
+  getAllProjects(pageNo = 1, pageSize = 12) {
     return entities.Project.findAll({
       where: {},
       include: {
         attributes: ['username', 'nickname'],
         model: entities.User,
         as: 'createUser'
-      }
+      },
+      offset: pageSize * (pageNo - 1),
+      limit: pageSize / 1,
+      order: [
+        ['create_time', 'DESC']
+      ]
     });
+  }
+  countAllProject() {
+    return entities.Project.count({});
   }
   /**
    * 根据id查询项目信息
