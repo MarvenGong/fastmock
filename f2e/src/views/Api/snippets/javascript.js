@@ -15,7 +15,7 @@ export default [
   { name: 'mj.date.datetime', content: '@datetime', tabTrigger: 'mj' },
   { name: 'mj.date.now', content: '@now', tabTrigger: 'mj' },
   // image
-  { name: 'mj.image.image', content: '@image(${1:"200x200"}, ${2:"#50B347"}, ${3:"#FFF"}, ${4:"FastMock"})', tabTrigger: 'mj' },
+  { name: 'mj.image.image', content: "@image(${1:'200x200'}, ${2:'#50B347'}, ${3:'#FFF'}, ${4:'FastMock'})", tabTrigger: 'mj' },
   { name: 'mj.image.dataImage', content: '@time', tabTrigger: 'mj' },
   // color
   { name: 'mj.color.color', content: '@color', tabTrigger: 'mj' },

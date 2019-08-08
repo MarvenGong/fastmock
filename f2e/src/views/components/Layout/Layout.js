@@ -57,6 +57,9 @@ class PageLayout extends Component {
                 <li><a rel="noopener noreferrer" target="_blank" href="//fmdocs.fastmock.site">
                   <Icon type="book" /> 使用文档</a>
                 </li>
+                <li><a rel="noopener noreferrer" target="_blank" href="https://github.com/MarvenGong/fastmock">
+                  <Icon type="github" /> Github</a>
+                </li>
                 <li><NavLink to='/feedback' activeStyle ={this.state.selectedStyle}><Icon type="question" /> 问题与建议</NavLink></li>
                 {this.state.userInfo.role / 1 === 1 &&
                   <li><a rel="noopener noreferrer" target="_blank" href='/admin/users'><Icon type="windows" /> 后台管理</a></li>
