@@ -42,21 +42,29 @@ class LoginForm extends Component {
         <Divider>注册</Divider>
         <FormItem>
           {getFieldDecorator('username', {
-            rules: [{ required: true, message: '请输入登录账号!' }]
+            rules: [
+              { required: true, message: '请输入登录账号!' },
+              { max: 20, message: '用户名不能超过20个字符!' }
+            ]
           })(
             <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('email', {
-            rules: [{ required: true, message: '请输入邮箱!' }, { type: 'email', message: '请输入正确格式的邮箱' }]
+            rules: [
+              { required: true, message: '请输入邮箱!' },
+              { type: 'email', message: '请输入正确格式的邮箱' }]
           })(
             <Input size="large" prefix={<Icon type="folder" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="邮箱（用于找回密码）" />
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: '请输入昵称!' }]
+            rules: [
+              { required: true, message: '请输入昵称!' },
+              { max: 20, message: '昵称不能超过20个字符!' }
+            ]
           })(
             <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="昵称（在本站的称呼）" />
           )}

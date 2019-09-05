@@ -6,7 +6,10 @@ class FeedbackModel {
   findAll(pageNo, pageSize) {
     return entities.Feedback.findAndCountAll({
       offset: (pageNo - 1) * pageSize,
-      limit: pageSize
+      limit: pageSize,
+      order: [
+        ['create_time', 'DESC']
+      ]
     });
   }
 }
