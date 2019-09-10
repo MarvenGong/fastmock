@@ -1,10 +1,11 @@
 /* global http ace */
 import React from 'react';
 import { PageLayout, PageInfo } from '@/views/components';
-import { Table, Card, Button, Form, Popconfirm, Tag, Icon, Tooltip, message } from 'antd';
+import { Table, Card, Button, Form, Popconfirm, Tag, Icon, Tooltip, message, Alert } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
+import SearchForm from './SearchForm';
 import jsBeautifier from 'js-beautify/js/lib/beautify';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
@@ -33,6 +34,10 @@ class Api extends React.Component {
     pjLoading: false,
     pageSize: 15,
     pageNum: 1,
+    searchForm: {
+      name: '',
+      url: ''
+    },
     total: 0,
     apiList: [],
     addApiVisible: false,
@@ -70,13 +75,19 @@ class Api extends React.Component {
   /**
    * 获取项目下的所有接口
    */
-  getApis = async(pageNo = 1) => {
+  getApis = async(pageNo = 1, searchForm = {}) => {
+    console.log(searchForm);
+    this.setState({
+      searchForm: searchForm
+    });
     const pid = this.props.match.params.id;
     this.setState({ pjLoading: true });
     const resp = await http.get('/api/api/list', {
       projectId: pid,
       pageNo,
-      pageSize: this.state.pageSize
+      pageSize: this.state.pageSize,
+      name: typeof searchForm.name === 'undefined' ? this.state.searchForm.name : searchForm.name,
+      url: typeof searchForm.url === 'undefined' ? this.state.searchForm.url : searchForm.url
     });
     this.setState({ pjLoading: false });
     if (resp.success) {
@@ -86,6 +97,9 @@ class Api extends React.Component {
         apiList: resp.data.apiList
       });
     }
+  }
+  handleSearch = (data) => {
+    this.getApis(1, data);
   }
   jumpPage = (page) => {
     this.getApis(page);
@@ -241,6 +255,7 @@ class Api extends React.Component {
         )
       }
     ];
+    const WrappedSearchForm = Form.create({ name: 'searchForm' })(SearchForm);
     return (
       <PageLayout>
         <section className="api">
@@ -261,23 +276,29 @@ class Api extends React.Component {
               <p><span>项目ID</span>{this.state.prjectInfo.sign}</p>
             </Card>
             <Card style={{ marginTop: '15px' }}>
+              <WrappedSearchForm
+                formData={this.state.searchForm}
+                onSearch={this.handleSearch}/>
               {this.state.apiList.length > 0 &&
-              <Table
-                bordered
-                rowKey="id"
-                size="small"
-                pagination={{ total: this.state.total, current: this.state.pageNum, pageSize: this.state.pageSize, onChange: this.jumpPage }}
-                loading={this.state.pjLoading}
-                components={this.components}
-                columns={columns}
-                dataSource={this.state.apiList}/>
+                <Table
+                  bordered
+                  rowKey="id"
+                  size="small"
+                  pagination={{ total: this.state.total, current: this.state.pageNum, pageSize: this.state.pageSize, onChange: this.jumpPage }}
+                  loading={this.state.pjLoading}
+                  components={this.components}
+                  columns={columns}
+                  dataSource={this.state.apiList}/>
               }
               {this.state.apiList.length <= 0 &&
                 <div className="empty-info">
-                  <p className="content"><Icon type="dropbox"/>
-                    <span>这个项目目前还没有任何接口</span>
+                  <p className="content">
+                    <p><Icon type="dropbox"/></p>
+                    <span>没有找到符合条件的接口信息</span>
                   </p>
-                  <p><Button size="large" onClick={this.openAddApi} icon="plus">创建接口</Button></p>
+                  {this.state.total <= 0 &&
+                    <p><Button size="large" onClick={this.openAddApi} icon="plus">创建接口</Button></p>
+                  }
                 </div>
               }
             </Card>
@@ -303,6 +324,8 @@ class Api extends React.Component {
                 </div>
               </div>
               <div className="right-editor">
+                <Alert message="输入正确的JSON数据，否则接口解析可能会失败。在编辑器任意位置输入”mj“可弹出mockjs规则代码补全（此信息可点击右边关闭按钮关闭）"
+                  type="info" closable banner />
                 <div className="top-actions">
                   <Button style={{ borderRadius: 0 }} onClick={this.openRuleDemo} type="primary" icon="question">查看代码示例</Button>
                   <span className="action-name">字体大小:</span>

@@ -152,7 +152,7 @@ class Projects extends Component {
           <section className="my-container" style={{ padding: '15px 0' }}>
             {this.state.pjLoading ? <Spin tip="Loading..."></Spin> : ''}
             {this.state.pjList.length > 0 &&
-              <block>
+              <div>
                 <Row gutter={16}>
                   {this.state.pjList.map((p, i) =>
                     <QueueAnim key={i} type="bottom" duration={800}>
@@ -208,11 +208,12 @@ class Projects extends Component {
                       onChange={ this.handleJumpPage }/>
                   </div>
                 </Row>
-              </block>
+              </div>
             }
             {this.state.pjList.length <= 0 && !this.state.pjLoading &&
               <div className="empty-info">
-                <p className="content"><Icon type="dropbox"/>
+                <p><Icon type="dropbox"/></p>
+                <p className="content">
                   {this.state.source === 'join' &&
                     <span>暂时还未加入任何项目</span>
                   }
