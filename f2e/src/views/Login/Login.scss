@@ -74,8 +74,8 @@ h2.login-title{
   width: 100%; height: 100%;
   background-color: rgba(0,0,0,.5);
   .guide-box{
-    width: 240px;
-    height: 140px;
+    width: 270px;
+    height: 150px;
     background: #fff;
     position: absolute;
     right: 80px;
@@ -96,11 +96,11 @@ h2.login-title{
     &:before{
       content: " ";
       display: inline-block;
-      border: 5px solid transparent;
-      border-bottom: 20px solid #fff;
+      border: 8px solid transparent;
+      border-bottom: 30px solid #fff;
       // border-right: 15px solid #fff;
       position: absolute;
-      top: -10px;
+      top: -20px;
       right: 40px;
       transform: rotate(30deg);
     }

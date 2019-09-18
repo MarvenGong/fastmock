@@ -55,6 +55,7 @@ class Login extends React.Component {
         {this.state.showGuide &&
           <div className="home-guide animated customFadeIn">
             <div className="guide-box">
+              <p>您没有进错网站，fastmock UI改版了</p>
               <p>扫码加入我们的QQ交流群</p>
               <p>方便我们快速处理您遇到的问题</p>
               <p style={{ marginBottom: '10px' }}>也可以与其他人一起交流</p>
