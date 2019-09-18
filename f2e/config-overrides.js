@@ -11,7 +11,7 @@ module.exports = function override(config, env) {
     '@components': path.resolve(__dirname, `${paths.appSrc}/components/`)
   })(config, env);
   config = rewireLess.withLoaderOptions({
-    modifyVars: { '@primary-color': '#339966', '@link-color': '#339966' },
+    modifyVars: { '@primary-color': '#4452d5', '@link-color': '#4452d5' },
     javascriptEnabled: true
   })(config, env);
   return config;

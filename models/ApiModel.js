@@ -1,5 +1,6 @@
 const entities = require('../entity');
 import Sequelize from 'sequelize';
+const Op = Sequelize.Op
 class ApiModel {
   countApiByProject(projectId) {
     return entities.Api.count({
@@ -8,10 +9,16 @@ class ApiModel {
       }
     });
   }
-  getApiListByProject(projectId, pageNo, pageSize) {
+  getApiListByProject(projectId, pageNo, pageSize, name = '', url = '') {
     return entities.Api.findAll({
       where: {
-        project: projectId
+        project: projectId,
+        name: {
+          [Op.like]: '%' + name + '%',
+        },
+        url: {
+          [Op.like]: '%' + url + '%',
+        }
       },
       offset: pageSize * (pageNo - 1),
       limit: pageSize / 1,

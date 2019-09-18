@@ -1,6 +1,9 @@
 .animated{
   animation-duration: .5s;
 }
+.animated-1s{
+  animation-duration: 1s;
+}
 .customFadeIn{
   animation-name: customFadeIn;
 }
@@ -39,5 +42,21 @@
   100%{
     transform: scaleX(1);
     opacity: 1;
+  }
+}
+.customUpAndDown{
+  animation-name: customUpAndDown;
+  animation-timing-function: linear;
+  animation-iteration-count: 10
+}
+@keyframes customUpAndDown{
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100%{
+    transform: translateY(0);
   }
 }

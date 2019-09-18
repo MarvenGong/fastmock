@@ -6,13 +6,15 @@ function apiInterface(router, apiModel) {
     let projectId = req.query.projectId;
     let pageNo = req.query.pageNo / 1;
     let pageSize = req.query.pageSize;
+    let name = req.query.name;
+    let url = req.query.url;
     let totalCount = 0;
     const conutRows = await apiModel.countApiByProject(projectId);
     if (conutRows) {
       totalCount = conutRows;
     }
     try {
-      const apiList = await apiModel.getApiListByProject(projectId, pageNo, pageSize);
+      const apiList = await apiModel.getApiListByProject(projectId, pageNo, pageSize, name, url);
       if (apiList) {
         responseFormat.jsonSuccess({
           pageNo,

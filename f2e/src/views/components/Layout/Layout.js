@@ -49,7 +49,7 @@ class PageLayout extends Component {
           <Header className="header" style={{ height: '60px' }}>
             <div className="my-container">
               <div className="logo">
-                <img height="26" style={{ marginTop: '-5px' }} src="./assets/images/fastmock-logo.jpg" alt=""/>
+                <img height="26" style={{ marginTop: '-5px' }} src="/assets/images/fastmock-logo.jpg" alt=""/>
               </div>
               <ul className="header-nav">
                 {/* <li><NavLink to='/home' activeStyle ={this.state.selectedStyle}><Icon type="home" /> 首页</NavLink></li> */}

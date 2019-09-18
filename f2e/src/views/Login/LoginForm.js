@@ -1,7 +1,7 @@
 /* global http */
 import React, { Component } from 'react';
 import {
-  Form, Icon, Input, Button, message, Divider
+  Form, Icon, Input, Button, message
 } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import userLogin from '../../utils/UserLogin';
@@ -38,7 +38,6 @@ class LoginForm extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Divider>登录</Divider>
         <FormItem>
           {getFieldDecorator('username', {
             rules: [{ required: true, message: '请输入用户名!' }]
@@ -57,7 +56,7 @@ class LoginForm extends Component {
           <Button size="large" loading={this.state.loginLoading} type="primary" htmlType="submit" className="login-form-button">
             登  录
           </Button>
-          <div style={{ textAlign: 'center' }}><Link to="/register" className="login-link" style={{ color: '#339966' }}>还没有账号？注册账号</Link></div>
+          <div style={{ textAlign: 'center' }}><Link to="/register" className="login-link" >还没有账号？注册账号</Link></div>
         </FormItem>
       </Form>
     );

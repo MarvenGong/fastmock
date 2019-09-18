@@ -4,26 +4,115 @@
   z-index: 3;
   width: 100%;
   height: 100%;
-  background: $color-theme;
+  // background: $color-theme;
+  background: #fff url('/assets/images/login-bg.png') left center no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  .nav{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: right;
+    padding-right: 80px;
+    font-size: 16px;
+    font-weight: 600;
+    & > *{
+      margin: 0 10px;
+      color: $color-theme;
+    }
+  }
 }
 .login{
-  width: 360px;
-  margin: 0 auto;
+  width: 396px;
+  position: absolute;
+  right: 278px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.login-logo{
+  margin-bottom: 80px;
+  position: relative;
+  &:before{
+    content: " ";
+    display: inline-block;
+    border: 24px solid #d9dbee;
+    padding: 30px;
+    position: absolute;
+    bottom: 0; left: 32px;
+    z-index: 0
+  }
+  img{
+    position: relative;
+    z-index: 1
+  }
 }
 .inset{
   position: relative;
   background: #fff;
-  padding: 2.5em;
-  border-radius: 0.3em;
-  -webkit-border-radius: 0.3em;
-  -o-border-radius: 0.3em;
-  -moz-border-radius: 0.3em;
-  box-shadow: 0px 0px 15px #545454;
+  // padding: 2.5em;
   min-height: 320px;
 }
 .login-body .login-form-button {
   width: 100%;
+}
+h2.login-title{
+  color: $color-theme;
+  font-size: 24px;
+  text-align: left;
+  margin-bottom: 48px;
+}
+.login-footer{
+  padding-left: 900px;
+  // color: #666;
+  filter: invert(100%);
+}
+.home-guide{
+  position: fixed;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,.5);
+  .guide-box{
+    width: 240px;
+    height: 140px;
+    background: #fff;
+    position: absolute;
+    right: 80px;
+    top: 50px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
+    color: $color-theme;
+    padding: 20px;
+    font-weight: 600;
+    animation: guideBox 1.2s ease-out;
+    p{
+      margin-bottom: 3px;
+      &:last-child{
+        margin-bottom: 10px;
+      }
+    }
+    &:before{
+      content: " ";
+      display: inline-block;
+      border: 5px solid transparent;
+      border-bottom: 20px solid #fff;
+      // border-right: 15px solid #fff;
+      position: absolute;
+      top: -10px;
+      right: 40px;
+      transform: rotate(30deg);
+    }
+  }
+}
+@keyframes guideBox {
+  0%{
+    transform: translate(-500px, 600px) scale(.3);
+    opacity: .3
+  }
+  100%{
+    transform: translate(0) scale(1);
+    opacity: 1
+  }
 }

@@ -71,7 +71,7 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
-          res.send(apiData);
+          res.json(apiData);
         } else {
           responseFormat.jsonError('查询失败');
         }
