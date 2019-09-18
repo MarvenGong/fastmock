@@ -76,9 +76,8 @@ class Api extends React.Component {
    * 获取项目下的所有接口
    */
   getApis = async(pageNo = 1, searchForm = {}) => {
-    console.log(searchForm);
     this.setState({
-      searchForm: searchForm
+      searchForm
     });
     const pid = this.props.match.params.id;
     this.setState({ pjLoading: true });
