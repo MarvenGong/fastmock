@@ -14,6 +14,7 @@ const loginModel = new LoginModel();
 const projectModel = new ProjectModel();
 const apiModel = new ApiModel();
 const feedbackModel = new FeedbackModel();
+// 登录验证
 router.post('/login', function(req, res) {
   const username = req.body.username;
   const password = crypto.createHash('md5').update('' + req.body.password).digest('hex');  // 先加密后验证
@@ -40,6 +41,7 @@ router.post('/login', function(req, res) {
     responseFormat.jsonError(err);
   });
 });
+// 注册
 router.post('/register', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
   let requestData = {...req.body};
@@ -69,6 +71,7 @@ router.post('/register', async function(req, res) {
     responseFormat.jsonError(error);
   }
 });
+// 退出登录
 router.get('/logout', function(req, res) {
   const responseFormat = new ResponseFormat(res);
   req.session.token = null;
@@ -105,6 +108,23 @@ router.post('/feedback', async function(req, res) {
     } else {
       responseFormat.jsonError('提交失败');
     }
+  } catch (error) {
+    responseFormat.jsonError(error);
+  }
+});
+// 获取首页统计信息
+router.get('/countData', async function(req, res) {
+  const responseFormat = new ResponseFormat(res);
+  try {
+    const userCount = await loginModel.countAll();
+    const projectCount = await projectModel.countAllProject();
+    const apiCount = await apiModel.countAll();
+    responseFormat.jsonSuccess({
+      users: userCount,
+      projects: projectCount,
+      apis: apiCount,
+      mocks: parseInt(new Date().getTime() / 400000)
+    });
   } catch (error) {
     responseFormat.jsonError(error);
   }

@@ -9,6 +9,9 @@ class ApiModel {
       }
     });
   }
+  countAll() {
+    return entities.Api.count();
+  }
   getApiListByProject(projectId, pageNo, pageSize, name = '', url = '') {
     return entities.Api.findAll({
       where: {

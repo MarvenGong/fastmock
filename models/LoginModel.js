@@ -12,6 +12,9 @@ class LoginModel {
       order: [['create_time', 'DESC']]
     });
   }
+  countAll() {
+    return User.count();
+  }
   verifyLogin(username, password) {
     return User.findAll({
       attributes: ['id', 'username', 'nickname', 'email', 'role'],

@@ -1,9 +1,11 @@
 import React from 'react';
 import LoginForm from './LoginForm';
+import LoginCountData from './LoginCountData';
 import './Login.scss';
 import { Form, Popover, Icon, Button } from 'antd';
 import { withRouter } from 'react-router-dom';
 import toastr from 'toastr';
+import userLogin from '../../utils/UserLogin';
 let EnhancedForm = Form.create()(LoginForm);
 class Login extends React.Component {
   state = {
@@ -12,6 +14,12 @@ class Login extends React.Component {
   hideGuide = () => {
     this.setState({ showGuide: false });
     localStorage.setItem('fastmockHomeGuide', 'yes');
+  }
+  componentWillMount() {
+    // 如果用户已经登录过了，直接跳转到项目首页
+    if (userLogin.isLogin()) {
+      this.props.history.push('/projects');
+    }
   }
   componentDidMount() {
     toastr.remove();
@@ -34,17 +42,22 @@ class Login extends React.Component {
             <span><Icon type="qq"></Icon>QQ交流群</span>
           </Popover>
         </div>
-        <div className="login">
-          <div className="inset animated customClipX">
-            <div className="login-logo">
-              <img src="/assets/images/logo-blue.png" width="396"></img>
-            </div>
-            <h2 className="login-title">用户登录</h2>
-            <EnhancedForm></EnhancedForm>
-            <h4>关于fastmock</h4>
-            <div>
-            fastmock可以让你在没有后端程序的情况下能真实地在线模拟ajax请求，
-            你可以用fatmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离
+        <div className="login-main">
+          <div className="login-left-data">
+            <LoginCountData/>
+          </div>
+          <div className="login">
+            <div className="inset animated customClipX">
+              <div className="login-logo">
+                <img src="/assets/images/logo-blue.png" width="396"></img>
+              </div>
+              <h2 className="login-title">用户登录</h2>
+              <EnhancedForm></EnhancedForm>
+              <h4>关于fastmock</h4>
+              <div>
+              fastmock可以让你在没有后端程序的情况下能真实地在线模拟ajax请求，
+              你可以用fatmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,22 @@
+.data-grid{
+  height: 150px;
+  text-align: center;
+  background-color: #4452d5;
+  padding: 10px 0;
+  p{
+    margin: 5px 0;
+    color: #fff;
+    font-weight: bold;
+    &.icon{
+      font-size: 40px;
+      margin-bottom: 0;
+    }
+    &.number{
+      font-size: 20px;
+      height: 30px;
+    }
+    &.name{
+      font-size: 12px;
+    }
+  }
+}
