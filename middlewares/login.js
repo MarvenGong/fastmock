@@ -2,7 +2,10 @@ const pathToRegexp = require('path-to-regexp');
 const loginWhitelist = [
   '/api/login',
   '/api/register',
+  '/api/searchUserExact',
   '/api/countData',
+  '/api/sendMail',
+  '/api/resendCode',
   '/mock/*',
   /test\/[\s\S]*?/,
 ];

@@ -22,6 +22,18 @@ const Register = Loadable({
   loader: () => import('./views/Register'),
   loading: loadingComponent
 });
+const ForgetPwd = Loadable({
+  loader: () => import('./views/ForgetPwd'),
+  loading: loadingComponent
+});
+const RegisterResult = Loadable({
+  loader: () => import('./views/RegisterResult'),
+  loading: loadingComponent
+});
+const DoActive = Loadable({
+  loader: () => import('./views/RegisterResult/DoActive'),
+  loading: loadingComponent
+});
 const Projects = Loadable({
   loader: () => import('./views/Projects/Projects'),
   loading: loadingComponent
@@ -54,6 +66,9 @@ class App extends Component {
           <Route exact path="/" component={Login}></Route>
         </HashRouter>
         <HashRouter><Route path="/register" component={Register}></Route></HashRouter>
+        <HashRouter><Route path="/regres/:userId" component={RegisterResult}></Route></HashRouter>
+        <HashRouter><Route path="/active/:code" component={DoActive}></Route></HashRouter>
+        <HashRouter><Route path="/forgetpwd" component={ForgetPwd}></Route></HashRouter>
         <HashRouter><Route path="/home" component={Home}></Route></HashRouter>
         <HashRouter><Route path="/projects" component={Projects}></Route></HashRouter>
         <HashRouter><Route path="/handbook" component={Handbook}></Route></HashRouter>

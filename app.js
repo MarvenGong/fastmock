@@ -19,6 +19,7 @@ const restc = require('restc');
 var app = express();
 
 var loginMiddleware = require('./middlewares/login');
+var responseFilter = require('./middlewares/responseFilter');
 
 // 跨域允许
 var corsOptions = {
@@ -66,6 +67,7 @@ app.use('/mock/*', restc.express());
 
 // 前端部分
 app.use('/', index);
+app.use(responseFilter);
 app.use(loginMiddleware); // 登录拦截
 app.use('/api', api);
 app.use('/test', users);

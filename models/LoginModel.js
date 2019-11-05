@@ -1,6 +1,8 @@
 const sequelizeIns = require('../db/sequelizeInstance');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const User = require('../entity').User;
+const entities = require('../entity');
 class LoginModel {
   constructor() {
   }
@@ -17,7 +19,7 @@ class LoginModel {
   }
   verifyLogin(username, password) {
     return User.findAll({
-      attributes: ['id', 'username', 'nickname', 'email', 'role'],
+      attributes: ['id', 'username', 'nickname', 'status', 'email', 'role'],
       where: {
         username: username,
         password: password
@@ -45,15 +47,53 @@ class LoginModel {
       }
     });
   }
+  findUserByActiveCode(activeCode) {
+    return User.findAll({
+      where: {
+        activeCode
+      }
+    });
+  }
   register(json) {
     return User.create(json);
   }
+  activeUser(user) {
+    return entities.User.update({
+      status: 1
+    }, {
+      where: {
+        id: user.id
+      }
+    });
+  }
+  modify(user) {
+    return entities.User.update(user, {
+      where: {
+        id: user.id
+      }
+    });
+  }
+  /**
+   * 根据关键字模糊匹配用户
+   * @param {*} key 
+   */
   searchUser(key) {
     return User.findAll({
       $like: {
         username: key,
         email: key,
         nickname: key
+      }
+    })
+  }
+  /**
+   * 根据关键字精确匹配用户
+   * @param {*} key 
+   */
+  searchUserExact(key) {
+    return User.findAll({
+      where: {
+        [Op.or]: [{username: key}, {nickname: key}, {email: key}]
       }
     })
   }

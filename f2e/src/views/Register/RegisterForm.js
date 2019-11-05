@@ -21,8 +21,8 @@ class LoginForm extends Component {
           loginLoading: false
         });
         if (resp.success) {
-          message.success('注册成功，正在跳转到登录页面...', 1);
-          this.props.history.push('/');
+          // message.success('注册成功，正在跳转到登录页面...', 1);
+          this.props.history.push('/regres/' + resp.data.user.id);
         }
       }
     });
@@ -55,7 +55,7 @@ class LoginForm extends Component {
               { required: true, message: '请输入邮箱!' },
               { type: 'email', message: '请输入正确格式的邮箱' }]
           })(
-            <Input size="large" prefix={<Icon type="folder" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="邮箱（用于找回密码）" />
+            <Input size="large" prefix={<Icon type="folder" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="邮箱（用于激活账号和找回密码）" />
           )}
         </FormItem>
         <FormItem>

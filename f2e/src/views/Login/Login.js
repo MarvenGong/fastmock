@@ -56,7 +56,7 @@ class Login extends React.Component {
               <h4>关于fastmock</h4>
               <div>
               fastmock可以让你在没有后端程序的情况下能真实地在线模拟ajax请求，
-              你可以用fatmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离
+              你可以用fastmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离
               </div>
             </div>
           </div>

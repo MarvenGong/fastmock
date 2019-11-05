@@ -32,5 +32,13 @@ class StringUtils {
   
     return params
   }
+  getRandomCode(length = 6) {
+    var Num = '';
+    for(var i = 0; i < length; i++)
+    {
+      Num += Math.floor(Math.random() * 10);
+    }
+    return Num;
+  }
 }
 export default StringUtils;

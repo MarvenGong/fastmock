@@ -8,7 +8,10 @@ export default class LoginCountData extends React.Component {
   state = {
     dataLoading: false,
     countData: {
-      users: 0
+      users: 0,
+      projects: 0,
+      apis: 0,
+      mocks: 0
     }
   }
   async getCountData() {
@@ -25,7 +28,7 @@ export default class LoginCountData extends React.Component {
     this.getCountData();
     this.countDataTimer = setInterval(() => {
       this.getCountData();
-    }, 5000);
+    }, 10000);
   }
   componentWillUnmount() {
     clearInterval(this.countDataTimer);

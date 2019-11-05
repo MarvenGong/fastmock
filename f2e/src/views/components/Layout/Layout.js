@@ -1,10 +1,11 @@
 /* global http */
 import React, { Component } from 'react';
-import { Layout, Icon, Modal } from 'antd';
+import { Layout, Icon, Modal, Dropdown, Menu, message } from 'antd';
 import userLogin from '../../../utils/UserLogin';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import './Layout.scss';
+import ModifyPwd from './ModifyPwd';
 const { Header, Content, Footer } = Layout;
 const history = createHashHistory();
 class PageLayout extends Component {
@@ -12,6 +13,7 @@ class PageLayout extends Component {
     super(props);
     this.state = {
       date: new Date(),
+      modifyPwdVisible: false,
       userInfo: {
         role: 0,
         username: ''
@@ -21,8 +23,8 @@ class PageLayout extends Component {
       }
     };
   }
-  logout = (e) => {
-    e.preventDefault();
+  logout = () => {
+    // e.preventDefault();
     Modal.confirm({
       title: '提示',
       content: '确定要退出吗？',
@@ -42,7 +44,33 @@ class PageLayout extends Component {
       userInfo: userLogin.getLoginInfo()
     });
   }
+  handleModifyPwdOk = () => {
+  }
+  handleModifyPwdCancel = () => {
+    this.setState({ modifyPwdVisible: false });
+  }
+  onModifyPwdSuccess = () => {
+    this.setState({ modifyPwdVisible: false });
+    message.success('修改成功，请重新登录');
+    userLogin.removeLoginInfo();
+    setTimeout(() => {
+      history.push('/');
+    }, 2000);
+  }
+  onUserMenuClick = ({ key }) => {
+    if (key === 'logout') {
+      this.logout();
+    } else {
+      this.setState({ modifyPwdVisible: true });
+    }
+  }
   render() {
+    const userMenu = (
+      <Menu onClick={ this.onUserMenuClick }>
+        <Menu.Item key="logout"><Icon type="logout"></Icon> 退出登录</Menu.Item>
+        <Menu.Item key="modifyPwd"><Icon type="setting"></Icon> 修改密码</Menu.Item>
+      </Menu>
+    );
     return (
       <section className="root-layout">
         <Layout className="layout">
@@ -66,8 +94,12 @@ class PageLayout extends Component {
                 }
               </ul>
               <div className="right-user">
-                <a><Icon type="user"></Icon> {this.state.userInfo.username}</a>
-                <a href="javascript:;" onClick={this.logout}><Icon type="logout"></Icon> 退出登录</a>
+                <Dropdown
+                  overlay={userMenu}
+                  trigger={['click']}>
+                  <a><Icon type="user"></Icon> {this.state.userInfo.username} <Icon type="down" /></a>
+                </Dropdown>
+                {/* <a href="javascript:;" onClick={this.logout}><Icon type="logout"></Icon> 退出登录</a> */}
               </div>
             </div>
           </Header>
@@ -89,6 +121,16 @@ class PageLayout extends Component {
             <p className="beian">渝ICP备19000613号-2</p>
           </Footer>
         </Layout>
+        <Modal
+          footer={null}
+          title="修改登录密码"
+          visible={this.state.modifyPwdVisible}
+          onOk={this.handleModifyPwdOk}
+          onCancel={this.handleModifyPwdCancel}
+        >
+          <ModifyPwd
+            onSuccess={this.onModifyPwdSuccess}/>
+        </Modal>
       </section>
     );
   }

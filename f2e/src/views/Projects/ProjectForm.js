@@ -42,7 +42,7 @@ class ProjectForm extends Component {
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请填写项目名称' }, { max: 20, message: '项目名称不能大于20个字符' }]
           })(
-            <Input AUTOCOMPLETE="off" placeholder="项目名称" />
+            <Input autoComplete="off" placeholder="项目名称" />
           )}
         </FormItem>
         <FormItem label={(
@@ -58,7 +58,7 @@ class ProjectForm extends Component {
               { validator: this.validBaseUrl }
             ]
           })(
-            <Input AUTOCOMPLETE="off" placeholder="接口基础路径" />
+            <Input autoComplete="off" placeholder="接口基础路径" />
           )}
         </FormItem>
         <FormItem label="项目描述">

@@ -13,6 +13,15 @@ module.exports = (sequelizeIns) => {
     email: Sequelize.STRING,
     nickname: Sequelize.STRING,
     role: Sequelize.INTEGER,
+    status: Sequelize.INTEGER,
+    activeCode: {
+      type: Sequelize.STRING,
+      field: 'active_code'
+    },
+    codeExpire: {
+      type: Sequelize.BIGINT,
+      field: 'code_expire'
+    },
     createdAt: {
       field: 'create_time',
       type: Sequelize.DATE,
