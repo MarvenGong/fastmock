@@ -1,16 +1,21 @@
 const pathToRegexp = require('path-to-regexp');
 const loginWhitelist = [
   '/api/login',
+  '/api/active',
   '/api/register',
   '/api/searchUserExact',
+  '/api/sendForgetPwdCode',
+  '/api/sureForgetPwd',
   '/api/countData',
   '/api/sendMail',
   '/api/resendCode',
+  '/api/modifyPwd',
+  '/api/logout',
   '/mock/*',
   /test\/[\s\S]*?/,
 ];
 module.exports = function(req,res,next){
-  let url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
+  let url = req.originalUrl.split('?')[0];//获取浏览器中当前访问的nodejs路由地址；
   const requestAccept = req.headers.accept;
   const isAjaxRequest = req.xhr || /json/i.test(requestAccept);
   const mockUrlExp = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*');
