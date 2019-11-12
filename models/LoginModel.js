@@ -10,7 +10,7 @@ class LoginModel {
     return User.findAndCountAll({
       offset: (pageNo - 1) * pageSize,
       limit: pageSize,
-      attributes: ['id', 'username', 'nickname', 'email', 'createdAt'],
+      attributes: ['id', 'username', 'nickname', 'email', 'createdAt', 'status'],
       order: [['create_time', 'DESC']]
     });
   }

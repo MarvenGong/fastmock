@@ -1,7 +1,7 @@
 /* global http ace */
 import React from 'react';
 import { PageLayout, PageInfo } from '@/views/components';
-import { Table, Card, Button, Form, Popconfirm, Tag, Icon, Tooltip, message, Alert } from 'antd';
+import { Table, Card, Button, Form, Popconfirm, Tag, Icon, Tooltip, message, Alert, Drawer } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import AceEditor from 'react-ace';
 import ApiForm from './ApiForm';
@@ -127,17 +127,41 @@ class Api extends React.Component {
       aceEditorValue: ''// '{\n  \"code\": \"0000\",\n  \"data\": {},\n  \"desc\": \"成功\"\n}' // eslint-disable-line
     });
   }
+  /**
+   * 关闭弹窗回调，清空数据
+   */
   cancelAddApi = () => {
+    this.refs['aceEditor'].editor.setValue('');
+    this.refs['apiForm'].setFieldsValue({
+      'id': null,
+      'method': '',
+      'name': '',
+      'url': '',
+      'description': '',
+      'on': true
+    });
     this.setState({ addApiVisible: false });
   }
+  /**
+   * 打开编辑接口的弹窗
+   */
   openEditApi = async(id) => {
     const resp = await http.get('/api/api/' + id);
     if (resp.success) {
+      const data = resp.data.apiInfo;
       this.setState({
         addApiVisible: true,
         apiModalType: 'edit',
         editApiFormData: resp.data.apiInfo,
         aceEditorValue: resp.data.apiInfo.mockRule
+      });
+      this.refs['apiForm'].setFieldsValue({
+        id: data.id,
+        name: data.name,
+        method: data.method,
+        url: data.url,
+        description: data.description,
+        on: data.on / 1 === 1
       });
     }
   }
@@ -192,6 +216,10 @@ class Api extends React.Component {
     });
   }
   preview = () => {
+    if (this.state.apiModalType === 'add') {
+      message.error('请先保存接口再预览（编辑时才可预览）');
+      return false;
+    }
     window.open(this.state.prjectInfo.mockBasePath + this.state.editApiFormData.url);
   }
   previewSingleApi = (url) => {
@@ -276,6 +304,7 @@ class Api extends React.Component {
             </Card>
             <Card style={{ marginTop: '15px' }}>
               <WrappedSearchForm
+                openAddApi={this.openAddApi}
                 formData={this.state.searchForm}
                 onSearch={this.handleSearch}/>
               {this.state.apiList.length > 0 &&
@@ -292,7 +321,8 @@ class Api extends React.Component {
               {this.state.apiList.length <= 0 &&
                 <div className="empty-info">
                   <p className="content">
-                    <p><Icon type="dropbox"/></p>
+                    <Icon type="dropbox"/>
+                    <br/>
                     <span>没有找到符合条件的接口信息</span>
                   </p>
                   {this.state.total <= 0 &&
@@ -302,8 +332,16 @@ class Api extends React.Component {
               }
             </Card>
           </section>
-          {this.state.addApiVisible &&
-            <section className="api-cover animated customZoomIn">
+          <Drawer
+            title="Basic Drawer"
+            width="90%"
+            placement="right"
+            maskClosable={true}
+            closable={false}
+            onClose={this.cancelAddApi}
+            visible={this.state.addApiVisible}
+          >
+            <section className="api-cover animated">
               <div className="attach-main">
                 <div className="form-btn-bar">
                   <ButtonGroup style={{ width: '100%' }}>
@@ -385,7 +423,7 @@ class Api extends React.Component {
                 />
               </div>
             </section>
-          }
+          </Drawer>
         </section>
       </PageLayout>
     );

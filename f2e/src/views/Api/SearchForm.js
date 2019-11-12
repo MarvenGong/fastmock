@@ -32,6 +32,9 @@ class SearchForm extends Component {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">搜索</Button>
+          <Button style={{ marginLeft: '8px' }}
+            onClick={this.props.openAddApi}
+            type="primary" icon="plus" htmlType="button">新增接口</Button>
         </Form.Item>
       </Form>
     );

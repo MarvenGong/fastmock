@@ -7,6 +7,7 @@
         <th>用户名</th>
         <th>昵称</th>
         <th>邮箱</th>
+        <th>激活状态</th>
         <th>注册时间</th>
       </tr>
     </thead>
@@ -16,6 +17,7 @@
               <td><%= user.username %></td>
               <td><%= user.nickname %></td>
               <td><%= user.email %></td>
+              <td><%= user.status %></td>
               <td><%= user.createdAt %></td>
             </tr>
         <% }); %>

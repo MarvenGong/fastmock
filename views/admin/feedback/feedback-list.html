@@ -13,7 +13,9 @@
         <% feedbacks.forEach(function(feed){ %>
           <tr>
               <td><%= feed.email %></td>
-              <td><%= feed.content %></td>
+              <td  style="word-break : break-all; ">
+                <p style="max-height: 108px; line-height: 18px; overflow-y:auto"><%= feed.content %></p>
+              </td>
               <td><%= feed.createdAt %></td>
             </tr>
         <% }); %>

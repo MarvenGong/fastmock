@@ -18,11 +18,17 @@ class ProjectModel {
           attributes: ['username', 'nickname'],
           model: entities.User,
           as: 'createUser'
-        }
+        },
+        order: [
+          ['create_time', 'DESC']
+        ]
       })
     } else if (source === 'join') {
       // querySql = `select * from project p left join user_rel_project up on p.id=up.project where up.user='${userId}'`;
       return entities.Project.findAll({
+        order: [
+          ['create_time', 'DESC']
+        ],
         include: [
           { 
             model: entities.User,
@@ -40,7 +46,8 @@ class ProjectModel {
     } else {
       querySql = '(select * from project pro where pro.create_user='+userId+')'
         + ' UNION'
-        + ' (select p.* from project p left join user_rel_project up on p.id=up.project where up.user='+ userId +')';
+        + ' (select p.* from project p left join user_rel_project up on p.id=up.project where up.user='+ userId +')'
+        + ' ORDER BY create_time desc';
       return entities.sequelizeInstance.query(querySql, { raw: true, type: Sequelize.QueryTypes.SELECT });
     }
   }

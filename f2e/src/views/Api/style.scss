@@ -38,7 +38,7 @@
   }
 }
 .api-cover{
-  position: fixed; left: 0; top: 0;
+  position: absolute; right: 0; top: 0;
   width: 100%;
   height: 100%;
   background-color: #000;
@@ -46,7 +46,7 @@
   .attach-main{
     background: $color-theme;
     width: 350px;
-    position: fixed;
+    position: absolute;
     height: 100%;
     left: 0;
     padding: 20px;
