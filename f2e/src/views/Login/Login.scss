@@ -13,7 +13,7 @@
     height: 100%;
     position: absolute;
     left: 0;
-    background: #fff url('/assets/images/login-bg.png') right center no-repeat;
+    background: #fff url('http://fastmock.ufile.ucloud.com.cn/login-bg.png') right center no-repeat;
   }
   .nav{
     position: absolute;
@@ -88,6 +88,7 @@ h2.login-title{
 .login-footer{
   color: #666;
   filter: invert(100%);
+  pointer-events: none;
 }
 .home-guide{
   position: fixed;
