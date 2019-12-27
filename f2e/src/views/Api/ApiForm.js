@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Hotkeys from 'react-hot-keys';
-import { Form, Input, Switch, Button, Select, message } from 'antd';
+import { Form, Input, InputNumber, Switch, Button, Select, message, Row, Col } from 'antd';
 import './style.scss';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -90,18 +90,33 @@ class ApiForm extends Component {
               <Input autoComplete="off" placeholder="接口名" />
             )}
           </FormItem>
-          <FormItem label="请求类型（method）">
-            {getFieldDecorator('method', {
-              rules: [{ required: true, message: '请填写项目名称' }]
-            })(
-              <Select placeholder="请求类型">
-                <Option key="get">get</Option>
-                <Option key="post">post</Option>
-                <Option key="delete">delete</Option>
-                <Option key="put">put</Option>
-              </Select>
-            )}
-          </FormItem>
+          <Row gutter={10}>
+            <Col span={12}>
+              <FormItem label="请求类型（method）">
+                {getFieldDecorator('method', {
+                  rules: [{ required: true, message: '请填写项目名称' }]
+                })(
+                  <Select placeholder="请求类型">
+                    <Option key="get">get</Option>
+                    <Option key="post">post</Option>
+                    <Option key="delete">delete</Option>
+                    <Option key="put">put</Option>
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="返回延时(单位毫秒)">
+                {getFieldDecorator('delay', {
+                  rules: [{ required: true, message: '请填写返回延时' }, { type: 'integer', message: '延迟时间必须是整数' }]
+                })(
+                  <InputNumber style={{ width: '100%' }}
+                    min={0} max={10000} step={100} autoComplete="off" placeholder="返回延时(单位毫秒)" />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={24}><span style={{ color: 'orange', 'font-size': '12px' }}>延时时间不输或为0表示不延时</span></Col>
+          </Row>
           <FormItem label="url">
             {getFieldDecorator('url', {
               rules: [{ required: true, message: '请填写接口url' }, { validator: this.validBaseUrl }]
