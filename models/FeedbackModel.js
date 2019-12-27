@@ -12,5 +12,13 @@ class FeedbackModel {
       ]
     });
   }
+  findById(id) {
+    return entities.Feedback.findById(id);
+  }
+  save(feedback) {
+    return entities.Feedback.update(feedback, {
+      where: { id: feedback.id }
+    });
+  }
 }
 export default FeedbackModel;

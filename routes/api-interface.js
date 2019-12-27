@@ -36,6 +36,7 @@ function apiInterface(router, apiModel) {
       id: body.id,
       name: body.name,
       method: body.method,
+      delay: parseInt(body.delay),
       url: body.url,
       description: body.description,
       mockRule: body.mockRule,
@@ -43,6 +44,7 @@ function apiInterface(router, apiModel) {
       on: body.on ? 1 : 0,
       createUser: userId
     }
+    console.log(apiData);
     try {
       // 新增模式下验证url是否已经存在
       const curProjectUrl = await apiModel.checkProjectApiUrlExsist(apiData.project, apiData.url);

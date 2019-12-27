@@ -50,6 +50,7 @@ router.all('*', async function(req, res) {
           // console.log(rightRows);
           const api = rightRows[0];
           let mockRule = rightRows[0].mockRule;
+          const mockDelay = rightRows[0].delay;
           mockRule = mockRule.replace(/[\r\n]/g, '');
           Mock.Handler.function = function (options) {
             const currMockUrl = api.url.replace(/{/g, ':').replace(/}/g, '') // /api/{user}/{id} => /api/:user/:id
@@ -71,7 +72,13 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
-          res.json(apiData);
+          if (mockDelay > 0) {
+            setTimeout(function() {
+              res.json(apiData);
+            }, mockDelay);
+          } else {
+            res.json(apiData);
+          }
         } else {
           responseFormat.jsonError('查询失败');
         }

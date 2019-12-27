@@ -4,6 +4,12 @@ module.exports = {
   'db': {
     'password'        : 'root'
   },
+  'radis': {
+    'host': 'localhost',
+    'port': '6379',
+    'ttl': 1800,
+    'logErrors': false
+  },
   'sequeliszeOptions': {
     'logging': console.log
   }

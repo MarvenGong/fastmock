@@ -8,6 +8,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
+    delay: Sequelize.INTEGER,
     name: Sequelize.STRING,
     method: Sequelize.STRING,
     url: Sequelize.STRING,

@@ -7,6 +7,7 @@
         <th>邮箱</th>
         <th>内容</th>
         <th>提交时间</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
@@ -17,16 +18,74 @@
                 <p style="max-height: 108px; line-height: 18px; overflow-y:auto"><%= feed.content %></p>
               </td>
               <td><%= feed.createdAt %></td>
+              <td><button onClick="replyFeedback('<%= feed.id %>', '<%= feed.email %>')" class="layui-btn layui-btn-sm">回复</button></td>
             </tr>
         <% }); %>
     </tbody>
   </table>
   <input type="hidden" id="totalCount" value="<%= totalCount%>"/>
-  <input type="hidden" id="pageNo" value="<%= pageNo%>">
-  <input type="hidden" id="pageSize" value="<%= pageSize%>">
+  <input type="hidden" id="pageNo" value="<%= pageNo%>"/>
+  <input type="hidden" id="pageSize" value="<%= pageSize%>"/>
   <div id="pagination"></div>
+  <script type="text/html" id="modal-template">
+    <div class="modal-context">
+      <div class="modal-container" data-modal-control="container">
+        <div class="modal-title" data-modal-control="title"></div>
+        <div class="modal-close" data-modal-control="close"></div>
+        <div class="modal-content" data-modal-control="content">
+          <form class="layui-form" action="">
+            <input type="hidden" id="feedback-id" value=""/>
+            <input type="hidden" id="feedback-email" value=""/>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">内容</label>
+              <div class="layui-input-block">
+                <textarea id="reply-content" name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button type="button" onClick="submitReply()" class="layui-btn btn-submit-reply">立即提交</button>
+              </div>
+            </div>
+          </form>  
+        </div>
+      </div>
+    </div>
+  </script>
   <script src="/layui/layui.all.js" charset="utf-8"></script>
   <script>
+    function replyFeedback(id, email) {
+      window.replyModal = $.openModal({ templateId: 'modal-template' });
+      $('#feedback-id').val(id);
+      $('#feedback-email').val(email);
+    }
+    function submitReply() {
+      $('.btn-submit-reply').btnLoading();
+      $.ajax({
+        url: '/admin/feedback/reply',
+        type: 'post',
+        dataType: 'json',
+        headers: {
+          token: $('#token').val()
+        },
+        data: {
+          id: $('#feedback-id').val(),
+          email: $('#feedback-email').val(),
+          content: $('#reply-content').val()
+        },
+        success: function(res) {
+          $('.btn-submit-reply').btnLoading('close');
+          if (res.code === '0000') {
+            window.replyModal.close();
+          } else {
+            alert(res.desc);
+          }
+        },
+        error: function(a,b,c) {
+          alert(a+b+c);
+        }
+      });
+    }
     layui.use(['laypage', 'layer'], function(){
       var laypage = layui.laypage;
       laypage.render({

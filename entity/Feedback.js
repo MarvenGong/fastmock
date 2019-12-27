@@ -9,6 +9,14 @@ module.exports = (sequelizeIns) => {
       autoIncrement: true
     },
     email: Sequelize.STRING,
+    replyStatus: {
+      type: Sequelize.INTEGER,
+      field: 'reply_status'
+    },
+    dealStatus: {
+      type: Sequelize.INTEGER,
+      field: 'deal_status'
+    },
     content: Sequelize.STRING,
     createdAt: {
       field: 'create_time',
