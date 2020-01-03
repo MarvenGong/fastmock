@@ -8,7 +8,7 @@ module.exports = {
   'radis': {
     'host': 'localhost',
     'port': '6379',
-    'ttl': 1800,
+    'ttl': 7200,
     'logErrors': false
   },
   'sequeliszeOptions': {

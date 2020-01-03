@@ -72,12 +72,19 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
-          if (mockDelay > 0) {
-            setTimeout(function() {
+          try { // 如果json转换出错返回错误信息
+            if (mockDelay > 0) {
+              setTimeout(function() {
+                res.json(apiData);
+              }, mockDelay);
+            } else {
               res.json(apiData);
-            }, mockDelay);
-          } else {
-            res.json(apiData);
+            }
+          } catch (error) {
+            res.json({
+              code: '0100',
+              desc: '录入的数据转换出错：' + error
+            });
           }
         } else {
           responseFormat.jsonError('查询失败');
