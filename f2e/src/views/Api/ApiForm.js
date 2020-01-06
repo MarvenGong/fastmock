@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Hotkeys from 'react-hot-keys';
-import { Form, Input, InputNumber, Switch, Button, Select, message, Row, Col } from 'antd';
+import StringUtils from '../../utils/StringUtils';
+import { Form, Input, InputNumber, Switch, Button, Select, message, Modal, Row, Col } from 'antd';
 import './style.scss';
+const su = new StringUtils();
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -20,17 +22,19 @@ class ApiForm extends Component {
     e.preventDefault();
     this.props.form.validateFields(async(err, formData) => {
       if (!err) {
-        this.setState({
-          submitLoading: true
-        });
         const submitForm = { ...formData };
         submitForm.project = this.props.pid;
         submitForm.mockRule = this.props.getApiRule();
-        // alert(JSON.stringify(submitForm));
+        if (!su.isJsonString(submitForm.mockRule)) {
+          Modal.error({
+            title: '警告',
+            content: '您输入的JSON数据有误，无法解析，请检查后重试'
+          });
+          return false;
+        };
+        this.setState({ submitLoading: true });
         const resp = await http.post('/api/api/add', submitForm);
-        this.setState({
-          submitLoading: false
-        });
+        this.setState({ submitLoading: false });
         if (resp.success) {
           let actionType = this.props.apiModalType === 'add' ? '添加' : '修改';
           message.success(`${actionType}成功`);
@@ -108,7 +112,7 @@ class ApiForm extends Component {
             <Col span={12}>
               <FormItem label="返回延时(单位毫秒)">
                 {getFieldDecorator('delay', {
-                  rules: [{ required: true, message: '请填写返回延时' }, { type: 'integer', message: '延迟时间必须是整数' }]
+                  rules: [{ required: false, message: '请填写返回延时' }, { type: 'integer', message: '延迟时间必须是整数' }]
                 })(
                   <InputNumber style={{ width: '100%' }}
                     min={0} max={10000} step={100} autoComplete="off" placeholder="返回延时(单位毫秒)" />

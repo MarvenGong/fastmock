@@ -1,5 +1,5 @@
 const entities = require('../entity');
-import Sequelize from 'sequelize';
+const Sequelize = require('sequelize');
 const Op = Sequelize.Op
 class ApiModel {
   countApiByProject(projectId) {
@@ -105,4 +105,4 @@ class ApiModel {
     })
   }
 }
-export default ApiModel;
+module.exports = ApiModel;

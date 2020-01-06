@@ -21,4 +21,4 @@ class FeedbackModel {
     });
   }
 }
-export default FeedbackModel;
+module.exports = FeedbackModel;

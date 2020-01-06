@@ -1,7 +1,7 @@
-import ApiModel from './ApiModel';
-import ProjectModel from './ProjectModel';
-import FeedbackModel from './FeedbackModel';
-export {
+const ApiModel = require('./ApiModel');
+const ProjectModel = require('./ProjectModel');
+const FeedbackModel = require('./FeedbackModel');
+module.exports = {
   ApiModel,
   ProjectModel,
   FeedbackModel

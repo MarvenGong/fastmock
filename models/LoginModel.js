@@ -113,4 +113,4 @@ class LoginModel {
     return sequelizeIns.query(sql, { raw: true, type: Sequelize.QueryTypes.SELECT });
   } 
 }
-export default LoginModel;
+module.exports = LoginModel;

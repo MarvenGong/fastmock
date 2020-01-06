@@ -57,8 +57,8 @@ module.exports = {
     'dialectOptions': {
       'supportBigNumbers': true,
       'bigNumberStrings': true,
-      charset: "utf8",
-      collate: "utf8_general_ci",
+      'charset': "utf8",
+      'collate': "utf8_general_ci",
     }
   },
   'radis': null

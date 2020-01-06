@@ -1,5 +1,5 @@
-import ResponseFormat from './ResponseFormat';
-import StringUtils from './StringUtils';
+const ResponseFormat = require('./ResponseFormat');
+const StringUtils = require('./StringUtils');
 var nodemailer = require('nodemailer');
 var sendMail = function(to, content) {
   var transporter = nodemailer.createTransport({
@@ -27,7 +27,7 @@ var sendMail = function(to, content) {
     });
   });
 };
-export {
+module.exports = {
   ResponseFormat,
   StringUtils,
   sendMail

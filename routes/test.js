@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-import { ResponseFormat } from '../utils';
+const { ResponseFormat } = require('../utils');
 const db = require('../db/db.js');
 const entities = require('../entity');
 /* GET users listing. */

@@ -1,6 +1,6 @@
-import ETools from 'etools';
+const ETools = require('etools');
 var config = require('config');
-import { ResponseFormat } from '../utils';
+const { ResponseFormat } = require('../utils');
 var wwwBaseUrl = config.get('wwwBaseUrl');
 function apiProject(router, projectModel, loginModel, apiModel, crypto) {
   router.get('/project/list', async function(req, res) {
@@ -157,4 +157,4 @@ function apiProject(router, projectModel, loginModel, apiModel, crypto) {
     }
   });
 }
-export default apiProject;
+module.exports = apiProject;

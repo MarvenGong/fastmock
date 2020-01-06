@@ -8,7 +8,7 @@ module.exports = {
     'host': 'localhost',
     'port': '6379',
     'ttl': 7200,
-    'logErrors': false
+    'logErrors': true
   },
   'sequeliszeOptions': {
     'logging': console.log

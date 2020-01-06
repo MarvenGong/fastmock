@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var fs = require('fs');
+var FileStreamRotator = require('file-stream-rotator');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -13,7 +15,19 @@ var api = require('./routes/api');
 var admin = require('./routes/admin');
 var cors = require('cors');
 var config = require('config');
-var compression = require('compression')
+console.log(config.get('enviroment'));
+var compression = require('compression');
+
+var logDirectory = path.join(__dirname, 'logs');
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+// create a rotating write stream
+var accessLogfile = FileStreamRotator.getStream({
+  date_format: 'YYYY-MM-DD',
+  filename: path.join(logDirectory, 'access-%DATE%.log'),
+  frequency: 'daily',
+  verbose: false
+})
 // import restc https://elemefe.github.io/restc/
 const restc = require('restc');
 var app = express();
@@ -39,7 +53,10 @@ app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(logger('dev', {
+  skip: function (req, res) { return res.statusCode < 400 },
+  stream: accessLogfile
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

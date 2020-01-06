@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const pathToRegexp = require('path-to-regexp'); // https://www.npmjs.com/package/path-to-regexp
-import { ApiModel, ProjectModel } from '../models';
-import Mock from 'mockjs';
-import { VM } from 'vm2';
+const { ApiModel, ProjectModel } = require('../models');
+const Mock = require('mockjs');
+const { VM } = require('vm2');
 const { ResponseFormat, StringUtils } = require('../utils');
 const stringUtils = new StringUtils();
 const apiModel = new ApiModel();
@@ -72,19 +72,12 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
-          try { // 如果json转换出错返回错误信息
-            if (mockDelay > 0) {
-              setTimeout(function() {
-                res.json(apiData);
-              }, mockDelay);
-            } else {
-              res.json(apiData);
-            }
-          } catch (error) {
-            res.json({
-              code: '0100',
-              desc: '录入的数据转换出错：' + error
-            });
+          if (mockDelay > 0) {
+            setTimeout(function() {
+              res.send(apiData);
+            }, mockDelay);
+          } else {
+            res.send(apiData);
           }
         } else {
           responseFormat.jsonError('查询失败');

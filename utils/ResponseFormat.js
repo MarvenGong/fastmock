@@ -24,4 +24,4 @@ class ResponseFormat {
     })
   }
 }
-export default ResponseFormat;
+module.exports = ResponseFormat;

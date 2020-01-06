@@ -1,5 +1,5 @@
 const entities = require('../entity');
-import Sequelize from 'sequelize';
+const Sequelize = require('sequelize');
 class ProjectModel {
   constructor() {
   }
@@ -188,4 +188,4 @@ class ProjectModel {
     })
   }
 }
-export default ProjectModel;
+module.exports = ProjectModel;

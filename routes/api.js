@@ -4,12 +4,12 @@ const crypto = require('crypto');
 const ETools = require('etools');
 var config = require('config');
 var wwwBaseUrl = config.get('wwwBaseUrl');
-import apiInterface from './api-interface';
-import apiProject from './api-project';
-import LoginModel from '../models/LoginModel';
-import ProjectModel from '../models/ProjectModel';
-import ApiModel from '../models/ApiModel';
-import FeedbackModel from '../models/FeedbackModel';
+const apiInterface = require('./api-interface');
+const apiProject = require('./api-project');
+const LoginModel = require('../models/LoginModel');
+const ProjectModel = require('../models/ProjectModel');
+const ApiModel = require('../models/ApiModel');
+const FeedbackModel = require('../models/FeedbackModel');
 const { ResponseFormat, sendMail, StringUtils } = require('../utils');
 /* GET home page. */
 const loginModel = new LoginModel();

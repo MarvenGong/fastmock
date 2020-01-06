@@ -1,7 +1,7 @@
-import LoginModel from '../models/LoginModel';
-import FeedbackModel from '../models/FeedbackModel';
-import { request } from 'express';
-import { ResponseFormat, sendMail } from '../utils';
+const LoginModel = require('../models/LoginModel');
+const FeedbackModel = require('../models/FeedbackModel');
+const { request } = require('express');
+const { ResponseFormat, sendMail } = require('../utils');
 var express = require('express');
 var router = express.Router();
 const loginModel = new LoginModel();

@@ -3,8 +3,9 @@
   "version": "1.1.1",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
-    "start": "cross-env NODE_ENV=production babel-node ./bin/www --presets es2015,stage-2"
+    "dev": "nodemon ./bin/www",
+    "start": "cross-env NODE_ENV=production babel-node ./bin/www --presets es2015,stage-2",
+    "prod": "pm2 start ecosystem.config.js --only fastmockProd"
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
@@ -22,6 +23,7 @@
     "etools": "^1.2.8",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
+    "file-stream-rotator": "^0.5.5",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.23.0",
     "morgan": "~1.9.0",
