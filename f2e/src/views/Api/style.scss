@@ -1,4 +1,8 @@
 @import '../../styles/var.scss';
+// 隐藏代码错误提示
+.ace_gutter-cell.ace_error{
+  background-image: none;
+}
 .p-info{
   margin-bottom: 10px;
   p{

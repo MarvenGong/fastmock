@@ -1,5 +1,6 @@
 const ETools = require('etools');
-const { ResponseFormat } = require('../utils');
+const { ResponseFormat, StringUtils } = require('../utils');
+const stringUtils = new StringUtils();
 function apiInterface(router, apiModel) {
   router.get('/api/list', async function(req, res) {
     const responseFormat = new ResponseFormat(res);
@@ -45,6 +46,10 @@ function apiInterface(router, apiModel) {
       createUser: userId
     }
     try {
+      if (!stringUtils.verifyMockUrl(apiData.mockRule, apiData.url, req)) {
+        responseFormat.jsonError('您输入的JSON数据有误，请检查后重试');
+        return false;
+      }
       // 新增模式下验证url是否已经存在
       const curProjectUrl = await apiModel.checkProjectApiUrlExsist(apiData.project, apiData.url);
       if (!apiData.id && curProjectUrl && curProjectUrl.length > 0) {

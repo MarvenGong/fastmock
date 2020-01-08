@@ -10,12 +10,14 @@ const apiModel = new ApiModel();
 const projectModel = new ProjectModel();
 router.all('*', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
-  // res.header('Access-Control-Allow-Origin', '*');
-  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-  // res.header('Access-Control-Allow-Headers', 'Content-Type');
-  // res.header('Access-Control-Allow-Headers', '*');
-  // res.header('Access-Control-Allow-Methods', '*');
-  // res.header('Access-Control-Allow-Credentials', 'true');
+  const { query } = req;
+  /* res.header('Access-Control-Allow-Origin', '*');
+  Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');*/
+
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
@@ -23,6 +25,9 @@ router.all('*', async function(req, res) {
   if (!pathNode) {
     res.json({ code: '0002', desc: '该接口地址不存在' });
   } else {
+    let jsonpCallback = query.callback; // 默认的jsonp callback
+    // 如果没有传入默认的callback，尝试解析指定的callback名
+    if (!jsonpCallback) jsonpCallback = query.jsonp_callback_name && (query[query.jsonp_callback_name] || 'callback');
     const pSign = pathNode[1];
     let mockUrl = '';
     let urlAndQuery = pathNode[2]; // 接口相对路径加query参数 如 /user/list?a=1
@@ -72,12 +77,24 @@ router.all('*', async function(req, res) {
           });
           vm.run('Mock.mock(new Function("return " + mode)())') // 数据验证，检测 setTimeout 等方法
           let apiData = vm.run('Mock.mock(template())') // 解决正则表达式失效的问题
+          // 根据是否jsonp返回内容
+          const sendResponse = function(res, data) {
+            if (jsonpCallback) {
+              res.type = 'text/javascript'
+              const resStr = `${jsonpCallback}(${JSON.stringify(data, null, 2)})`
+                .replace(/\u2028/g, '\\u2028')
+                .replace(/\u2029/g, '\\u2029'); // JSON parse vs eval fix 清除行分隔符和段分隔符. https://github.com/rack/rack-contrib/pull/37
+              res.send(resStr);
+            } else {
+              res.send(data);
+            }
+          }
           if (mockDelay > 0) {
             setTimeout(function() {
-              res.send(apiData);
+              sendResponse(res, apiData);
             }, mockDelay);
           } else {
-            res.send(apiData);
+            sendResponse(res, apiData);
           }
         } else {
           responseFormat.jsonError('查询失败');

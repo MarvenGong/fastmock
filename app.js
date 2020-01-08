@@ -15,7 +15,6 @@ var api = require('./routes/api');
 var admin = require('./routes/admin');
 var cors = require('cors');
 var config = require('config');
-console.log(config.get('enviroment'));
 var compression = require('compression');
 
 var logDirectory = path.join(__dirname, 'logs');

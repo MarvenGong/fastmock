@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Hotkeys from 'react-hot-keys';
-import StringUtils from '../../utils/StringUtils';
-import { Form, Input, InputNumber, Switch, Button, Select, message, Modal, Row, Col } from 'antd';
+// import StringUtils from '../../utils/StringUtils';
+import { Form, Input, InputNumber, Switch, Button, Select, message, Row, Col } from 'antd';
 import './style.scss';
-const su = new StringUtils();
+// const su = new StringUtils();
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -25,13 +25,6 @@ class ApiForm extends Component {
         const submitForm = { ...formData };
         submitForm.project = this.props.pid;
         submitForm.mockRule = this.props.getApiRule();
-        if (!su.isJsonString(submitForm.mockRule)) {
-          Modal.error({
-            title: '警告',
-            content: '您输入的JSON数据有误，无法解析，请检查后重试'
-          });
-          return false;
-        };
         this.setState({ submitLoading: true });
         const resp = await http.post('/api/api/add', submitForm);
         this.setState({ submitLoading: false });
@@ -119,7 +112,7 @@ class ApiForm extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={24}><span style={{ color: 'orange', 'font-size': '12px' }}>延时时间不输或为0表示不延时</span></Col>
+            <Col span={24}><span style={{ color: 'orange', 'fontSize': '12px' }}>延时时间不输或为0表示不延时</span></Col>
           </Row>
           <FormItem label="url">
             {getFieldDecorator('url', {
