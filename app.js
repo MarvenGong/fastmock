@@ -47,7 +47,6 @@ app.use(cors(corsOptions));
 // view engine setup
 app.engine('html', require('ejs-mate'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('views', path.join(__dirname, 'f2e'));
 app.set('view engine', 'html');
 // app.locals._layoutFile = 'layout.html';
 
