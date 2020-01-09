@@ -47,6 +47,7 @@ app.use(cors(corsOptions));
 // view engine setup
 app.engine('html', require('ejs-mate'));
 app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'f2e'));
 app.set('view engine', 'html');
 // app.locals._layoutFile = 'layout.html';
 
@@ -59,8 +60,10 @@ app.use(logger('dev', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/static', express.static(path.join(__dirname, 'views/index/static')));
-app.use('/assets', express.static(path.join(__dirname, 'views/index/assets')));
+// app.use('/static', express.static(path.join(__dirname, 'views/index/static')));
+// app.use('/assets', express.static(path.join(__dirname, 'views/index/assets')));
+app.use('/static', express.static(path.join(__dirname, 'f2e/build/static')));
+app.use('/assets', express.static(path.join(__dirname, 'f2e/build/assets')));
 app.use(express.static(path.join(__dirname, 'public')));
 // 使用 session 中间件
 var radisOptions = config.get('radis');

@@ -73,7 +73,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && mv build/* ../views/index/",
     "test": "react-app-rewired test"
   },
   "eslintConfig": {
