@@ -5,6 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 fastmock.sql
 sqls/
+nohup.out
+logs/
 
 # Editor directories and files
 .idea
