@@ -7,6 +7,8 @@ fastmock.sql
 sqls/
 nohup.out
 logs/
+.well-known
+BACKUP.md
 
 # Editor directories and files
 .idea

@@ -61,6 +61,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'views/index/static')));
 app.use('/assets', express.static(path.join(__dirname, 'views/index/assets')));
+app.use('/.well-known', express.static(path.join(__dirname, '.well-known')));
 app.use(express.static(path.join(__dirname, 'public')));
 // 使用 session 中间件
 var radisOptions = config.get('radis');

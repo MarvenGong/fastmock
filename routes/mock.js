@@ -22,7 +22,7 @@ router.all('*', async function(req, res) {
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
   // console.log(pathNode);
-  if (!pathNode) {
+  if (!pathNode || pathNode.length < 3) {
     res.json({ code: '0002', desc: '该接口地址不存在' });
   } else {
     let jsonpCallback = query.callback; // 默认的jsonp callback
