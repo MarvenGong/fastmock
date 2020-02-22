@@ -21,8 +21,9 @@ router.all('*', async function(req, res) {
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
-  // console.log(pathNode);
-  if (!pathNode || pathNode.length < 3) {
+  console.log('============mock url' + typeof pathNode + '=============');
+  console.log(pathNode);
+  if (!pathNode || !pathNode[0] || !pathNode[1] || !pathNode[2]) {
     res.json({ code: '0002', desc: '该接口地址不存在' });
   } else {
     let jsonpCallback = query.callback; // 默认的jsonp callback
