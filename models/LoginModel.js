@@ -21,8 +21,13 @@ class LoginModel {
     return User.findAll({
       attributes: ['id', 'username', 'nickname', 'status', 'email', 'role'],
       where: {
-        username: username,
-        password: password
+        $or: [{
+          username: username,
+          password: password
+        }, {
+          email: username,
+          password: password
+        }]
       }
     });
   }

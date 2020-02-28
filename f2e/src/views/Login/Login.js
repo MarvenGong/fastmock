@@ -38,6 +38,8 @@ class Login extends React.Component {
             <Icon type="book" /> 使用文档</a>
           <a rel="noopener noreferrer" target="_blank" href="https://github.com/MarvenGong/fastmock">
             <Icon type="github" /> Github</a>
+          <a rel="noopener noreferrer" target="_blank" href="https://fmdocs.fastmock.site/book/support.html">
+            <Icon type="heart" /> 支持fastmock</a>
           <Popover content={qqGroupImg} title="扫码进群">
             <span><Icon type="qq"></Icon>QQ交流群</span>
           </Popover>

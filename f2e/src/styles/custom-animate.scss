@@ -4,6 +4,9 @@
 .animated-1s{
   animation-duration: 1s;
 }
+.animated-2s{
+  animation-duration: 2s;
+}
 .customFadeIn{
   animation-name: customFadeIn;
 }
@@ -58,5 +61,25 @@
   }
   100%{
     transform: translateY(0);
+  }
+}
+.customBreath{
+  animation-name: customBreath;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite
+}
+@keyframes customBreath{
+  0%{
+    transform: scale(1);
+    color: #fff;
+  }
+  50%{
+    transform: scale(1); color: rgb(230, 80, 21);
+    text-shadow: 0 0 3px #fff;
+  }
+  100%{
+    transform: scale(1);
+    color: #fff;
   }
 }

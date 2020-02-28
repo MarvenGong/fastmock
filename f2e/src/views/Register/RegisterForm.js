@@ -37,16 +37,25 @@ class LoginForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
+    const usernameRule = (rule, value, callback) => {
+      let reg = /^[a-zA-Z]+[a-z0-9A-Z]*$/g;
+      if (reg.test(value)) {
+        callback();
+      } else {
+        callback(new Error('只能输入字母开头的字母或数字'));
+      }
+    };
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
           {getFieldDecorator('username', {
             rules: [
               { required: true, message: '请输入登录账号!' },
-              { max: 20, message: '用户名不能超过20个字符!' }
+              { max: 20, message: '用户名不能超过20个字符!' },
+              { validator: usernameRule, message: '只能输入字母开头的字母或数字' }
             ]
           })(
-            <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />
+            <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名（字母开头的字母或数字组合）" />
           )}
         </FormItem>
         <FormItem>
