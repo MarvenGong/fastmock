@@ -6,7 +6,7 @@ var sendMail = function(to, content) {
     service: 'qq',
     auth: {
       user: '1637077309@qq.com', //这里填自己的 qq号
-      pass: 'xoksahlngujbfcaa' //授权码,通过QQ邮箱获取 
+      pass: 'qrrxsaiosqaqbdch' //授权码,通过QQ邮箱获取 
     }
   });
   var mailOptions = {
