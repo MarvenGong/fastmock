@@ -79,7 +79,6 @@ function getCodeAndExpire() {
 router.post('/register', async function(req, res) {
   const responseFormat = new ResponseFormat(res);
   let requestData = {...req.body};
-  // console.log(requestData);
   try {
     const resp = await loginModel.findUserByUsername(requestData.username);
     if (resp && resp.length > 0) {
@@ -124,7 +123,6 @@ router.post('/modifyPwd', async function(req, res) {
   const username = req.session.username;
   const password = crypto.createHash('md5').update('' + oldPwd).digest('hex');  // 先加密后验证
   const rows = await loginModel.verifyLogin(username, password);
-  console.log(rows);
   if (rows.length <= 0) {
     res.responseFormat.jsonError('旧密码错误，请重新输入!');
     return false;

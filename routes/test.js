@@ -13,7 +13,6 @@ router.get('/', async function(req, res) {
   });
 });
 router.get('/projects/join/:pid', function(req, response) {
-  console.log(req.params.pid);
   entities.User.findAll({
     where: {
       // id: req.params.pid

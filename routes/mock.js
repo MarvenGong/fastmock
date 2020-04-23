@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var config = require('config');
+var env = config.get('enviroment');
+var isDev = env === 'dev';
 const pathToRegexp = require('path-to-regexp'); // https://www.npmjs.com/package/path-to-regexp
 const { ApiModel, ProjectModel } = require('../models');
 const Mock = require('mockjs');
@@ -21,8 +24,9 @@ router.all('*', async function(req, res) {
   res.header('Content-Type', 'application/json;charset=utf-8');
   var path = req.originalUrl;
   const pathNode = pathToRegexp('/mock/:projectSign(.{32})/:mockURL*').exec(path);
-  console.log('============mock url' + typeof pathNode + '=============');
-  console.log(pathNode);
+  if (isDev) {
+    console.log(pathNode);
+  }
   if (!pathNode || !pathNode[0] || !pathNode[1] || !pathNode[2]) {
     res.json({ code: '0002', desc: '该接口地址不存在' });
   } else {
@@ -52,8 +56,6 @@ router.all('*', async function(req, res) {
             responseFormat.jsonError('没有匹配到接口');
             return false;
           }
-          // console.log('匹配到的api');
-          // console.log(rightRows);
           const api = rightRows[0];
           let mockRule = rightRows[0].mockRule;
           const mockDelay = rightRows[0].delay;
