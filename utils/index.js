@@ -22,7 +22,6 @@ var sendMail = function(to, content) {
       if (err) {
         reject(err);
       }
-      console.log('发送成功');
       resolve();
     });
   });

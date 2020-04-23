@@ -48,7 +48,7 @@ class StringUtils {
           return true;
       }
     } catch(e) {
-      console.error('规则解析出错:' + e.message);
+      // console.error('规则解析出错:' + e.message);
       return false;
     }
     // return false;
