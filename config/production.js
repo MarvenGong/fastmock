@@ -12,7 +12,7 @@ module.exports = {
     'logErrors': false
   },
   'sequeliszeOptions': {
-    'logging': false,
+    'logging': function(){},
     'dialectOptions': {
       'socketPath': '/opt/lampp/var/mysql/mysql.sock'
     }
