@@ -1,4 +1,4 @@
-# fastmock
+# [fastmock](https://fmdocs.fastmock.site/book/)
 ### 版本说明
 - 1.2.1
   1. 增加jsonp请求的支持
@@ -11,7 +11,7 @@
   2. 增加找回密码功能
   3. 增加修改密码功能
   4. 部分页面调整和bug修复
-### [fastmock中文文档地址](https://fmdocs.fastmock.site/book/)
+### [【---fastmock中文文档地址---】](https://fmdocs.fastmock.site/book/)
 fastmock可以让你在没有后端程序的情况下能真实地在线模拟ajax请求，你可以用fatmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离。在使用fastmock之前，你的团队实现数据模拟可能是下面的方案中的一种或者多种
 
 - 本地手写数据模拟，在前端代码中产生一大堆的mock代码。
