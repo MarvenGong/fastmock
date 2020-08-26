@@ -1,5 +1,9 @@
-# [fastmock](https://fmdocs.fastmock.site/book/)
+# fastmock
 ### 版本说明
+- 1.2.2
+  1. 项目根路径支持下划线和短横线
+  2. 接口描述信息过长页面变形bug修复
+  3. 接口url改变保存后预览报错修复
 - 1.2.1
   1. 增加jsonp请求的支持
   2. 修改部分问题
@@ -11,7 +15,7 @@
   2. 增加找回密码功能
   3. 增加修改密码功能
   4. 部分页面调整和bug修复
-### [【---fastmock中文文档地址---】](https://fmdocs.fastmock.site/book/)
+### [fastmock文档](https://marvengong.gitee.io/fastmock-docs)
 fastmock可以让你在没有后端程序的情况下能真实地在线模拟ajax请求，你可以用fatmock实现项目初期纯前端的效果演示，也可以用fastmock实现开发中的数据模拟从而实现前后端分离。在使用fastmock之前，你的团队实现数据模拟可能是下面的方案中的一种或者多种
 
 - 本地手写数据模拟，在前端代码中产生一大堆的mock代码。
@@ -111,4 +115,4 @@ fastmock可以让你在没有后端程序的情况下能真实地在线模拟aja
 
 tip:当然，你也可以通过npm script不同命令加载不同配置文件的形式切换你的XHR地址，这里不作详细介绍。
 
-还是不了解fastmock？让我们跟着教程一探究竟吧 [开始使用fastmock](https://fmdocs.fastmock.site/book/)
+还是不了解fastmock？让我们跟着教程一探究竟吧 [开始使用fastmock](https://marvengong.gitee.io/fastmock-docs)
